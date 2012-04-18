@@ -170,8 +170,10 @@ R = \widehat{M}R
 \end{equation}
 De la ecuación \eqref{eigenr} se puede deducir que la solución $R$ no es más que el autovector dominante con autovalor $1$ de la matriz de adyacencia 
 modificada $\widehat{M}$. Este vector existirá siempre y cuando $det\left|\widehat{M}-I\right| \neq 0 $ (pasa siempre?dem?). Dado que las filas y columnas de 
-$\widehat{M}$ suman $1$, por círculos de Gershgorin el módulo de todos los autovalores deberá ser menor o igual a $1$, por lo que el autovector 
-es dominante (dem de que es unico? es decir no se repite el autovalor?).
+$\widehat{M}$ suman $1$ (es estocástica), por círculos de Gershgorin el módulo de todos los autovalores deberá ser menor o igual a $1$, por lo que el autovector 
+es dominante. El autovalor será único asumiendo que existe una única distribución que satisface la ecuación \label{eigenr}, lo cual es equivalente a exigir 
+que $\widehat{M}$ sea inversible. (estaria bueno tirar por aca tipo asumiendo que la cadena de markov es logica bajo los conceptos de page rank bla bla
+ estas cosas raras no pueden pasar etc etc).
 Por lo tanto, se puede calcular con el método de las potencias. Cabe destacar que como 
 $R$ es una distribución de probabilidades, el autovector debe estar normalizado.\\
 El método de las potencias en este caso (dado que el autovalor dominante es $1$ y $\widehat{M}$ es una matriz probabilística) 
