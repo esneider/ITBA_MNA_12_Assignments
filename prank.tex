@@ -1,0 +1,255 @@
+\documentclass[%
+    %draft,
+    %submission,
+    %compressed,
+    final,
+    %
+    %technote,
+    %internal,
+    %submitted,
+    %inpress,
+    reprint,
+    %
+    %titlepage,
+    notitlepage,
+    %anonymous,
+    narroweqnarray,
+    inline,
+    twoside,
+    invited
+    ]{ieee}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{moreverb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{fancybox}
+\usepackage{float}
+\usepackage{fancyvrb}
+\usepackage{subfigure}
+
+\newcommand{\latexiie}{\LaTeX2{\Large$_\varepsilon$}}
+
+%\usepackage{ieeetsp}    % if you want the "trans. sig. pro." style
+%\usepackage{ieeetc}    % if you want the "trans. comp." style
+%\usepackage{ieeeimtc}    % if you want the IMTC conference style
+
+% Use the `endfloat' package to move figures and tables to the end
+% of the paper. Useful for `submission' mode.
+%\usepackage {endfloat}
+
+% Use the `times' package to use Helvetica and Times-Roman fonts
+% instead of the standard Computer Modern fonts. Useful for the 
+% IEEE Computer Society transactions.
+%\usepackage{times}
+% (Note: If you have the commercial package `mathtime,' (from 
+% y&y (http://www.yandy.com), it is much better, but the `times' 
+% package works too). So, if you have it...
+%\usepackage {mathtime}
+
+% for any plug-in code... insert it here. For example, the CDC style...
+%\usepackage{ieeecdc}
+
+\begin{document}
+
+%----------------------------------------------------------------------
+% Title Information, Abstract and Keywords
+%----------------------------------------------------------------------
+\title[PageRank]{%
+       PageRank}
+
+% format author this way for journal articles.
+% MAKE SURE THERE ARE NO SPACES BEFORE A \member OR \authorinfo
+% COMMAND (this also means `don't break the line before these
+% commands).
+\author[Sneidermanis, Sturla]{Darío Sneidermanis, Martín Sturla\\
+\\\textbf{19 de Abril de 2012}
+}
+
+
+
+\journal{Cátedra\ \ Métodos\ Numéricos\ Avanzados,\ ITBA\ }
+\titletext{-\ 19, ABRIL\ 2012}
+\lognumber{}
+\pubitemident{}
+\loginfo{19 de Abril, 2012.}
+\firstpage{1}
+
+\confplacedate{Buenos Aires, Argentina, 19 de Abril, 2012}
+
+\maketitle               
+
+\begin{abstract} 
+Este documento busca analizar distintas implementaciones de PageRank y comparar su desempeño. (bla, terminemoslo despues).
+\end{abstract}
+
+\begin{keywords}
+PageRank, motores de búsqueda, cadenas de Markov, método de las potencias, autovalores, autovectores.
+\end{keywords}
+
+%----------------------------------------------------------------------
+% SECTION I: Introduccion%----------------------------------------------------------------------
+\section{Introducción}
+Con el inicio de las telecomunicaciones masivas por Internet a principio de los 90s y su rápido crecimiento, nace la necesidad de 
+crear un índice de los sitios web. Estos índices son conocidos como motores de búsqueda, y acompañaron el crecimiento del tráfico 
+de Internet. En 1994, World Wide Web Worm poseía un índice de unos 110.000 sitios, y este último era consultado unas 1500 veces diariamente. Ya en 
+1997, los motores de búsqueda contaban con índices con una cantidad de sitios que variaba desde 2 hasta 100 millones, y algunos eran consultados
+unas  20 millones de veces diariamente. Estos índices eran mantenidos por humanos y por lo tanto, además de ser posiblemente subjetivos, 
+no parecían ser suficientemente escalables para poder acompañar el rápido crecimiento del tráfico por Internet. \\
+En 1998, habiendo previsto índices en el orden 
+de los miles de millones de sitios para el fin del milenio, dos estudiantes de Stanford, Sergey Brin y Lawrance Page, publican un documento llamado 
+\textit{"The Anatomy of a Large-Scale Hypertextual Web Search Engine"} que explaya el problema mencionado anteriormente y ofrece una solución; un 
+algoritmo computable para indexar sitios web según su importancia, conocido como \textit{PageRank}. Estos estudiantes crearon un motor de búsqueda 
+ llamado \textit{Google} utilizando este algoritmo. \\
+El motivo de este documento, que busca analizar distintas implementaciones de \textit{PageRank}  y comparar su desempeño, nace del interés de analizar 
+teoremas y conceptos antiguos de la matemática, como lo son los autovalores y autovectores, aplicados en un área moderna y con aún mucho por investigar 
+como es la informática. (something else?)
+
+%----------------------------------------------------------------------
+% SECTION II: Que es PageRank?
+%----------------------------------------------------------------------
+
+\section{PageRank}
+
+\subsection{Modelado del problema}
+
+\par El conjunto de los sitios web puede ser representado como un grafo, donde cada sitio es un nodo. Existe un arco guiado entre dos nodos si 
+desde el primer sitio hay un hipervínculo al segundo. A cada uno de los nodos se le asigna un valor representando la probabilidad de que 
+una cierta persona navegando por Internet esté observando dicho sitio, donimado el \textit{PageRank}  del sitio. 
+En cada época o iteración, dicha persona puede decidir quedarse y jamás volver 
+a usar un hipervínculo o desplazarse a otro sitio por medio de un hipervínculo.  La probabilidad de que no suceda el 
+ primer suceso se denomina factor de \textit{damping}. Nótese que como el primer suceso implica que la persona no navegará nuevamente, 
+el fenómeno de \textit{damping} no puede ser representado como un arco al mismo nodo.\\
+En vista de dichas propiedades, el grafo puede ser visto como una cadena de Markov, con ciertas propiedades. Se asume que la probabilidad iniciales de 
+estar en cualquier nodo es uniforme. Asimismo, se asume que la probabilidad de abrir cualquier hipervínculo de un mismo nodo también es uniforme. Además no existen 
+estados absorbentes; si un sitio no tiene hipervínculos, se asume que un usuario podría ingresar el nombre de un nuevo sitio en el navegador, por lo que 
+se generan arcos desde dicho estado absorbente a todos los estados del grafo. Debido a que un usuario podría hacer esto incluso en estados 
+que no son abosrbentes, se suele agregar dichos arcos en todos los nodos, con una probabilidad residual igual al factor de \textit{damping}.\\
+A medida que se itera dicha cadena de Markov y se aproxima al infinito, los valores asociados a cada nodo convergen a un cierto valor. Dicho valor 
+representa el peso o importancia de la página. (Necesita gráficos)
+\subsection{Marco algebraico}
+Para empezar, se debe calcular el valor \textit{PageRank} de un nodo $p_{k}$. Dicho valor se calcula con la suma de la probabilidad de que el usuario 
+decida quedarse indefinidamente en el nodo, y aquella asignada a que el usuario haya llegado al sitio a través de un hipervínculo. La probabilidad 
+de haber navegado por un hipervínculo, es decir el factor de damping, es representado con una $d$ y empíricamente se ha establecido un valor
+de $0,85$ como adecuado. El grado de un nodo $p_{i}$ se denomina $L(p_{i})$ y es la cantidad de hipervínculos que posee. El valor $N$ representa 
+la cantidad total de nodos. Se denomina $M_{p_{i}}$ al conjunto de nodos directamente alcanzables desde $p_{i}$. Es decir: (deberiamos derivar mas esto?)\\
+\begin{equation}\label{pranknode}
+PR(p_{k}) = \frac{1-d}{N} + d\left(\sum_{p_{i}\in M_{p_{i}}}\frac{PR(p_{i})}{L(p_{i})}\right)
+\end{equation}
+\par Aplicando la ecuación \eqref{pranknode} a todos los nodos y exigiendo que el \textit{PageRank} de cada nodo converja a un valor, 
+se obtiene una nueva ecuación en forma matricial:
+\begin{equation}\label{pranksolution}
+R = \begin{pmatrix}
+(1-d)/N \\ (1-d)/N \\ \vdots \\ (1-d)/N
+\end{pmatrix} + dMR
+\end{equation}
+Donde $M$ es la matrix de adyacencia del grafo:
+\begin{equation}\label{M}
+M=\begin{pmatrix}
+l(p_{1},p_{1}) & l(p_{1},p_{2}) & \cdots & l(p_{1},p_{N}) \\
+l(p_{2},p_{1}) & \ddots & & \vdots \\
+\vdots & & l(p_{i}, p_{j}) & \\
+l(p_{N},p_{1}) & \cdots &  & l(p_{N},p_{N}) 
+\end{pmatrix}
+\end{equation}
+Donde $l(p_{i},p_{j})$ es el peso del arco del nodo $p_{i}$ al nodo $p_{j}$, definido como $0$ si dicho arco no existe.\\
+La solución $R$, vector representando los valores a los cuales han convergido los nodos, es el \textit{PageRank} final de cada nodo.
+\subsection{Método de las potencias en PageRank}
+El problema de \textit{PageRank} puede ser resuelto utilizando el método de las potencias. Considérese $\widehat{M}$ definida como:
+\begin{equation}\label{mhat}
+\widehat{M} = M + \frac{1-d}{N}E
+\end{equation}
+Donde $E$ es una matriz con todos sus valores iguales a $1$. Es fácil (es? quizás habría que deducirlo un poco) ver que combinando \eqref{pranksolution} 
+y \eqref{mhat} se obtiene:
+\begin{equation}\label{eigenr}
+R = \widehat{M}R
+\end{equation}
+De la ecuación \eqref{eigenr} se puede deducir que la solución $R$ no es más que el autovector dominante con autovalor $1$ de la matriz de adyacencia 
+modificada $\widehat{M}$. Este vector existirá siempre y cuando $det\left|\widehat{M}-I\right| \neq 0 $ (pasa siempre?dem?). Dado que las filas y columnas de 
+$\widehat{M}$ suman $1$, por círculos de Gershgorin el módulo de todos los autovalores deberá ser menor o igual a $1$, por lo que el autovector 
+es dominante (dem de que es unico? es decir no se repite el autovalor?).
+Por lo tanto, se puede calcular con el método de las potencias. Cabe destacar que como 
+$R$ es una distribución de probabilidades, el autovector debe estar normalizado.\\
+El método de las potencias en este caso (dado que el autovalor dominante es $1$ y $\widehat{M}$ es una matriz probabilística) 
+consiste en tomar un vector $v(0)$ inicializado 
+arbitrariamente e iterar según la regla:
+\begin{equation}
+v(t+1) = \widehat{M}v(t)
+\end{equation} 
+hasta que se cumpla:
+\begin{equation}
+\left| v(t+1) - v(t) \right| < \epsilon
+\end{equation}
+Donde $\epsilon$ es un error adecuado. El método de las potencias converge al autovalor dominante siempre y cuando la proyección del vector $v(0)$ a este 
+último no sea nula.
+
+%----------------------------------------------------------------------
+% The bibliography. This bibliography was generated using the following
+% two lines:
+%\bibliographystyle{IEEEbib}
+%\bibliography{ieeecls}
+% where, the contents of the ieeecls.bib file was:
+%
+%@book{lamport,
+%        AUTHOR = "Leslie Lamport",
+%         TITLE = "A Document Preparation System: {\LaTeX} User's Guide
+%                  and Reference Manual",
+%       EDITION = "Second",
+%     PUBLISHER = "Addison-Wesley",
+%       ADDRESS = "Reading, MA",
+%          YEAR = 1994,
+%          NOTE = "Be sure to get the updated version for \LaTeX2e!"
+%}
+%
+%@book{goossens,
+%        AUTHOR = "Michel Goossens and Frank Mittelbach and
+%                  Alexander Samarin",
+%         TITLE = "The {\LaTeX} Companion",
+%     PUBLISHER = "Addison-Wesley",
+%       ADDRESS = "Reading, MA",
+%          YEAR = 1994,
+%}
+%
+% The ieeecls.bbl file was manually included here to make the distribution
+% of this paper easier. You need not do it for your own papers.
+
+%\clearpage
+
+%\begin{thebibliography}{1}
+
+%\bibitem{lamport1}
+%Fierens, P. (2011),
+%\newblock {\em Cuadrados mínimos: repaso},
+%\newblock Buenos Aires: Instituto Tecnológico de Buenos Aires.
+
+%\bibitem{lamport1}
+%Abdi, H.,
+%\newblock {\em  Least-squares: {Encyclopedia for research methods for the social sciences}},
+%\newblock Thousand Oaks (CA): Sage. pp, 2003.
+
+%\bibitem{lamport1}
+%Farebrother, R.W. (1988),
+%\newblock {\em Linear Least Squares Computations, STATISTICS: Textbooks and Monographs}, %\newblock New York: Marcel Dekker.
+
+%\bibitem{lamport1}
+%Lipson, M.; Lipschutz, S. (2001),
+%\newblock {\em Schaum's outline of theory and problems of linear algebra}, 
+%newblock New York: McGraw-Hill, pp. 69–80.
+
+
+%\end{thebibliography}
+
+%----------------------------------------------------------------------
+
+
+\clearpage
+
+
+
+
+
+\end{document}
