@@ -1,0 +1,15 @@
+* Abstract (esto para lo último..)
+* Introducción (motivación)
+* Análisis del problema (“determinar la importancia de una página”)
+* Breve descripción de la solución propuesta (PageRank)
+* Descripción detallada del algoritmo básico
+* Descripción de cómo aplicar el método de las potencias
+* Variaciones (ver el tercer link de la bibliografía)
+* Conclusión (?)
+
+
+Bibliografía
+* http://infolab.stanford.edu/pub/papers/google.pdf
+* http://en.wikipedia.org/wiki/PageRank
+* http://www.math.muni.cz/~xslesing/teaching/pagerank/DeeperInsidePR.pdf
+
