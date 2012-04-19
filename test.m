@@ -118,7 +118,7 @@ LS
 PM
 
 hold on;
-plot(N_range, LS, ";Sistema Lineal;");
+plot(N_range, LS, "1;Sistema Lineal;");
 hold on;
-plot(N_range, PM, ";Método de las potencias;");
+plot(N_range, PM, "2;Método de las potencias;");
 print -dpng bla.png;
