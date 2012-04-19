@@ -12,6 +12,8 @@ function [M] = adj_matrix(I)
         endif
         M(i, :) ./= s;
     endfor
+
+    M = transpose(M);
 endfunction
 
 
@@ -20,16 +22,36 @@ endfunction
 function [M_hat] = super_M(M, d)
 
     N = length(M);
-    M_hat = transpose(ones(N, N).*((1-d)/N) + M.*d);
+    M_hat = ones(N, N).*((1-d)/N) + M.*d;
 endfunction
 
 
+% A \  Ax=b
+% b /
+% error
+function [x] =jacobi(A,b,error)
+  n=length(A);
+  D=diag(diag(A));
+  L=D-tril(A);
+  U=D-triu(A);
+  invD=diag(1./diag(A));
+  x=zeros(n,1);
+  oldx=ones(n,1);
+  while (max(abs(x-oldx)) > error)
+      oldx=x;
+      x=(invD*(L+U))*x+invD*b;
+  endwhile
+endfunction
+
 % I incidence matrix
 % d damping factor
-function [R] = solve_as_linear_system(I, d)
+% error
+function [R] = solve_as_linear_system(I, d, error)
 
     N = length(I);
-    R = (eye(N) - d*super_M(adj_matrix(I), d)) \ (((1-d)/N) .* ones(N, 1));
+    A = eye(N) - d*adj_matrix(I), d;
+    b = ((1-d)/N) .* ones(N, 1);
+    R = jacobi(A, b, error);
     R ./= norm(R, 1);
 endfunction
 
@@ -73,8 +95,8 @@ I = [
 
 d = 0.85;
 
-error = 1e-3;
+error = 1e-7;
 
-LS = solve_as_linear_system(I, d)
+LS = solve_as_linear_system(I, d, error)
 PM = solve_with_power_method(I, d, error)
 
