@@ -1,7 +1,7 @@
 % I incidence matrix
 function [M] = adj_matrix(I)
 
-    M = I;
+    M = double(I);
     N = length(I);
 
     for i=1:N
@@ -49,7 +49,7 @@ endfunction
 function [R] = solve_as_linear_system(I, d, error)
 
     N = length(I);
-    A = eye(N) - d*adj_matrix(I), d;
+    A = eye(N) - d*adj_matrix(I);
     b = ((1-d)/N) .* ones(N, 1);
     R = jacobi(A, b, error);
     R ./= norm(R, 1);
@@ -79,24 +79,44 @@ function [R] = solve_with_power_method(I, d, error)
 endfunction
 
 
-I = [
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
-      0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0;
-      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
-      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
-      0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0;
-      0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0;
-      0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0;
-      0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0;
-      0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0;
-      0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0;
-      0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0
- ];
+%I = [
+%      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
+%      0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0;
+%      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
+%      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
+%      0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0;
+%      0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0;
+%      0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0;
+%      0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0;
+%      0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0;
+%      0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0;
+%      0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0
+% ];
 
 d = 0.85;
 
 error = 1e-7;
 
-LS = solve_as_linear_system(I, d, error)
-PM = solve_with_power_method(I, d, error)
+max_links = 15;
 
+LS = [];
+PM = [];
+
+N_range = 20:20:100
+for N = N_range
+
+    avg_links = rand() * max_links;
+
+    I = rand(N)*N < avg_links;
+
+    tic; solve_as_linear_system(I, d, error); LS = [LS, toc];
+    tic; solve_with_power_method(I, d, error); PM = [PM, toc];
+
+endfor
+
+LS
+PM
+
+plot(N_range, LS);
+plot(N_range, PM);
+print -dpng bla.png;
