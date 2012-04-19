@@ -60,7 +60,7 @@ function [R] = solve_as_linear_system(I, d, error, jacob)
     A = eye(N) - d*adj_matrix(I);
     b = ((1-d)/N) .* ones(N, 1);
 
-    if jacob == 0:
+    if (jacob == 0)
         R = octave_solve(A, b, error);
     else
         R = jacobi(A, b, error);
@@ -137,9 +137,11 @@ hold on;
 plot(N_range, PM, "2;Método de las potencias;");
 xlabel("Tamaño de la matriz");
 ylabel("Segundos");
+hold off;
 replot();
 print -dpng jacobi_pm.png;
 hold off;
+clearplot();
 
 %%%%%%%%%%%%%%%
 
@@ -166,9 +168,11 @@ hold on;
 plot(N_range, PM, "2;Método de las potencias;");
 xlabel("Tamaño de la matriz");
 ylabel("Segundos");
+hold off;
 replot();
 print -dpng octave_pm.png;
 hold off;
+clearplot();
 
 %%%%%%%%%%%%%%%%
 
@@ -200,9 +204,11 @@ hold on;
 plot(N_range, PM, "2;Método de las potencias;");
 xlabel("Tamaño de la matriz");
 ylabel("Segundos");
+hold off;
 replot();
 print -dpng octave_jacobi_pm.png;
 hold off;
+clearplot();
 
 %%%%%%%%%%%%%
 
@@ -226,4 +232,5 @@ ylabel("Segundos");
 replot();
 print -dpng d_pm.png;
 hold off;
+clearplot();
 
