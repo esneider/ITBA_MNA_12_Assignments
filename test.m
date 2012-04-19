@@ -102,7 +102,7 @@ max_links = 15;
 LS = [];
 PM = [];
 
-N_range = 20:20:100
+N_range = 20:20:1000
 for N = N_range
 
     avg_links = rand() * max_links;
@@ -117,6 +117,8 @@ endfor
 LS
 PM
 
-plot(N_range, LS);
-plot(N_range, PM);
+hold on;
+plot(N_range, LS, ";Sistema Lineal;");
+hold on;
+plot(N_range, PM, ";Método de las potencias;");
 print -dpng bla.png;
