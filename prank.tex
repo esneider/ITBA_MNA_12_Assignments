@@ -8,7 +8,7 @@
     %internal,
     %submitted,
     %inpress,
-    reprint,
+    %reprint,
     %
     %titlepage,
     notitlepage,
@@ -43,11 +43,11 @@
 %\usepackage {endfloat}
 
 % Use the `times' package to use Helvetica and Times-Roman fonts
-% instead of the standard Computer Modern fonts. Useful for the 
+% instead of the standard Computer Modern fonts. Useful for the
 % IEEE Computer Society transactions.
 %\usepackage{times}
-% (Note: If you have the commercial package `mathtime,' (from 
-% y&y (http://www.yandy.com), it is much better, but the `times' 
+% (Note: If you have the commercial package `mathtime,' (from
+% y&y (http://www.yandy.com), it is much better, but the `times'
 % package works too). So, if you have it...
 %\usepackage {mathtime}
 
@@ -72,8 +72,7 @@
 
 
 
-\journal{Cátedra\ \ Métodos\ Numéricos\ Avanzados,\ ITBA\ }
-\titletext{-\ 19, ABRIL\ 2012}
+\titletext{Métodos\ Numéricos\ Avanzados,\ ITBA\ -\ 19\ de\ abril\ de\ 2012}
 \lognumber{}
 \pubitemident{}
 \loginfo{19 de Abril, 2012.}
@@ -81,113 +80,168 @@
 
 \confplacedate{Buenos Aires, Argentina, 19 de Abril, 2012}
 
-\maketitle               
+\maketitle
 
-\begin{abstract} 
-Este documento busca analizar distintas implementaciones de PageRank y comparar su desempeño. (bla, terminemoslo despues).
+\begin{abstract}
+Se analizan y compara el desempeño de la implementación clásica del algoritmo de PageRank, con el método de las potencias, y una implementación
+alternativa que se empezó a estudiar recientemente, usando sistemas lineales.
 \end{abstract}
 
 \begin{keywords}
-PageRank, motores de búsqueda, cadenas de Markov, método de las potencias, autovalores, autovectores.
+PageRank, motores de búsqueda, cadenas de Markov, método de las potencias, autovectores.
 \end{keywords}
 
 %----------------------------------------------------------------------
 % SECTION I: Introduccion%----------------------------------------------------------------------
 \section{Introducción}
-Con el inicio de las telecomunicaciones masivas por Internet a principio de los 90s y su rápido crecimiento, nace la necesidad de 
-crear un índice de los sitios web. Estos índices son usados por los motores de búsqueda, y acompañaron el crecimiento del tráfico 
-de Internet. En 1994, World Wide Web Worm poseía un índice de unos 110.000 sitios, y este último era consultado unas 1500 veces diariamente. Ya en 
+Con el inicio de las telecomunicaciones masivas por Internet a principio de los 90' y su rápido crecimiento, nació la necesidad de
+crear un índice de los sitios web. Estos índices eran usados por los motores de búsqueda, y acompañaron el crecimiento del tráfico
+de Internet. En 1994, World Wide Web Worm poseía un índice de unos 110.000 sitios, y era consultado unas 1500 veces diariamente. Ya en
 1997, los motores de búsqueda contaban con índices con una cantidad de sitios que variaba desde 2 hasta 100 millones, y algunos eran consultados
-unas  20 millones de veces diariamente. Estos índices eran mantenidos por humanos y por lo tanto, además de ser posiblemente subjetivos, 
-no parecían ser suficientemente escalables para poder acompañar el rápido crecimiento del tráfico por Internet. \\
-En 1998, habiendo previsto índices en el orden 
-de los miles de millones de sitios para el fin del milenio, dos estudiantes de Stanford, Sergey Brin y Lawrance Page, publican un documento llamado 
-\textit{"The Anatomy of a Large-Scale Hypertextual Web Search Engine"} que explaya el problema mencionado anteriormente y ofrece una solución; un 
-algoritmo computable para indexar sitios web según su importancia, conocido como \textit{PageRank}. Estos estudiantes crearon un motor de búsqueda 
- llamado \textit{Google} utilizando este algoritmo. \\
-El motivo de este documento, que busca analizar distintas implementaciones de \textit{PageRank}  y comparar su desempeño, nace del interés de analizar 
-teoremas y conceptos antiguos de la matemática, como lo son los autovalores y autovectores, aplicados en un área moderna y con aún mucho por investigar 
-como es la informática. (something else?)
+unas 20 millones de veces diariamente. Estos índices eran mantenidos por humanos y por lo tanto, además de ser posiblemente subjetivos,
+no parecían ser lo suficientemente escalables como para poder acompañar el rápido crecimiento del tráfico por Internet. \\
+
+En 1998, habiendo previsto índices en el orden
+de los miles de millones de sitios para el fin del milenio, dos estudiantes de Stanford, Sergey Brin y Lawrance Page, publicaron un paper titulado
+\textit{"The Anatomy of a Large-Scale Hypertextual Web Search Engine"} que explora el problema mencionado anteriormente y ofrece una solución; un
+algoritmo computable para indexar sitios web según su importancia, conocido como \textit{PageRank}. Estos estudiantes crearon el conocido motor de
+búsqueda llamado \textit{Google} utilizando este algoritmo. \\
+
+Se comienza el paper con una exposición y modelado del problema en la sección II, seguido del desarrollo matemático básico en la sección III.
+En la sección IV se exponen los dos métodos de solución y se comparan experimentalmente en la sección V.
 
 %----------------------------------------------------------------------
 % SECTION II: Que es PageRank?
 %----------------------------------------------------------------------
 
-\section{PageRank}
+\section{Modelado del problema}
 
-\subsection{Modelado del problema}
+\par El conjunto de los sitios web puede ser representado como un grafo, donde cada sitio es un nodo. Existe una arista dirigida entre dos nodos si
+desde el primer sitio hay un hipervínculo al segundo. A cada uno de los nodos se le asigna un valor representando la probabilidad de que
+una cierta persona navegando por Internet esté observando dicho sitio, denominado el \textit{PageRank} del sitio.
+En cada época o iteración, dicha persona puede decidir quedarse en ese sitio definitivamente o desplazarse a otro sitio por medio de un hipervínculo
+(con probabilidad $d$, llamado factor de amortiguamiento).
+Nótese que el factor de amortiguamiento no puede ser representado como un lazo, ya que una vez que se decide quedarse en un sitio, el proceso finaliza.\\
 
-\par El conjunto de los sitios web puede ser representado como un grafo, donde cada sitio es un nodo. Existe un arco guiado entre dos nodos si 
-desde el primer sitio hay un hipervínculo al segundo. A cada uno de los nodos se le asigna un valor representando la probabilidad de que 
-una cierta persona navegando por Internet esté observando dicho sitio, donimado el \textit{PageRank}  del sitio. 
-En cada época o iteración, dicha persona puede decidir quedarse y jamás volver 
-a usar un hipervínculo o desplazarse a otro sitio por medio de un hipervínculo.  La probabilidad de que no suceda el 
- primer suceso se denomina factor de \textit{damping}. Nótese que como el primer suceso implica que la persona no navegará nuevamente, 
-el fenómeno de \textit{damping} no puede ser representado como un arco al mismo nodo.\\
-En vista de dichas propiedades, el grafo puede ser visto como una cadena de Markov, con ciertas propiedades. Se asume que la probabilidad iniciales de 
-estar en cualquier nodo es uniforme. Asimismo, se asume que la probabilidad de abrir cualquier hipervínculo de un mismo nodo también es uniforme. Además no existen 
-estados absorbentes; si un sitio no tiene hipervínculos, se asume que un usuario podría ingresar el nombre de un nuevo sitio en el navegador, por lo que 
-se generan arcos desde dicho estado absorbente a todos los estados del grafo. Debido a que un usuario podría hacer esto incluso en estados 
-que no son abosrbentes, se suele agregar dichos arcos en todos los nodos, con una probabilidad residual igual al factor de \textit{damping}.\\
-A medida que se itera dicha cadena de Markov y se aproxima al infinito, los valores asociados a cada nodo convergen a un cierto valor. Dicho valor 
-representa el peso o importancia de la página. (Necesita gráficos)
-\subsection{Marco algebraico}
-Para empezar, se debe calcular el valor \textit{PageRank} de un nodo $p_{k}$. Dicho valor se calcula con la suma de la probabilidad de que el usuario 
-decida quedarse indefinidamente en el nodo, y aquella asignada a que el usuario haya llegado al sitio a través de un hipervínculo. La probabilidad 
-de haber navegado por un hipervínculo, es decir el factor de damping, es representado con una $d$ y empíricamente se ha establecido un valor
-de $0,85$ como adecuado. El grado de un nodo $p_{i}$ se denomina $L(p_{i})$ y es la cantidad de hipervínculos que posee. El valor $N$ representa 
-la cantidad total de nodos. Se denomina $M_{p_{i}}$ al conjunto de nodos directamente alcanzables desde $p_{i}$. Es decir: (deberiamos derivar mas esto?)\\
+En vista de dichas propiedades, este grafo puede ser visto como una cadena de Markov: se toman las probabilidades iniciales de
+estar en cualquier nodo uniformemente, y las probabilidades de abrir un hipervínculo de un mismo nodo también uniformemente. Además no existen
+estados absorbentes; si un sitio no tiene hipervínculos, se asume que un usuario podría ingresar el nombre de un nuevo sitio en el navegador, por lo que
+se generan aristas desde dicho estado absorbente a todos los demás estados del grafo. Debido a que un usuario podría hacer esto incluso en estados
+que no son abosrbentes, se suele agregar dichas aristas en todos los nodos, con una probabilidad residual igual al factor de amortiguamiento.\\
+
+El vector de probabilidades al que converge dicha cadena de Markov representa el peso o importancia de cada sitio.
+
+\section{Marco algebraico}
+
+\par Para empezar, se debe calcular el valor del \textit{PageRank} de un nodo $p_{k}$. Dicho valor se calcula con la suma de la probabilidad de que el usuario
+decida quedarse indefinidamente en el nodo, y aquella asignada a que el usuario haya llegado al sitio a través de un hipervínculo. La probabilidad
+de haber navegado por un hipervínculo, es decir el factor de amortiguamiento $d$, vale aproximadamente $0,85$ (establecido empíricamente [1]).
+
 \begin{equation}\label{pranknode}
-PR(p_{k}) = \frac{1-d}{N} + d\left(\sum_{p_{i}\in M_{p_{i}}}\frac{PR(p_{i})}{L(p_{i})}\right)
+PR(p_i) = \frac{1-d}{N} + d \sum_{p \in M_{p_{i}}} \frac{PR(p)}{L(p)}
 \end{equation}
-\par Aplicando la ecuación \eqref{pranknode} a todos los nodos y exigiendo que el \textit{PageRank} de cada nodo converja a un valor, 
+
+Donde $L(p)$ es el grado de salida del nodo $p$, $N$ es la cantidad total de nodos, y $M_{p_i}$ es el conjunto de los nodos directamente alcanzables
+desde $p_i$.\\
+
+Aplicando la ecuación \eqref{pranknode} a todos los nodos y exigiendo que el \textit{PageRank} de cada nodo converja a un valor,
 se obtiene una nueva ecuación en forma matricial:
+
 \begin{equation}\label{pranksolution}
 R = \begin{pmatrix}
 (1-d)/N \\ (1-d)/N \\ \vdots \\ (1-d)/N
 \end{pmatrix} + dMR
 \end{equation}
-Donde $M$ es la matrix de adyacencia del grafo:
+
+Donde $R$ es el vector de \textit{PageRanks} y $M$ es la matrix de adyacencia del grafo:
+
 \begin{equation}\label{M}
 M=\begin{pmatrix}
 l(p_{1},p_{1}) & l(p_{1},p_{2}) & \cdots & l(p_{1},p_{N}) \\
 l(p_{2},p_{1}) & \ddots & & \vdots \\
 \vdots & & l(p_{i}, p_{j}) & \\
-l(p_{N},p_{1}) & \cdots &  & l(p_{N},p_{N}) 
+l(p_{N},p_{1}) & \cdots &  & l(p_{N},p_{N})
 \end{pmatrix}
 \end{equation}
-Donde $l(p_{i},p_{j})$ es el peso del arco del nodo $p_{i}$ al nodo $p_{j}$, definido como $0$ si dicho arco no existe.\\
-La solución $R$, vector representando los valores a los cuales han convergido los nodos, es el \textit{PageRank} final de cada nodo.
-\subsection{Método de las potencias en PageRank}
-El problema de \textit{PageRank} puede ser resuelto utilizando el método de las potencias. Considérese $\widehat{M}$ definida como:
+
+Con $l(p_{i},p_{j})$ siendo el peso de la arista desde nodo $p_{i}$ hacia el nodo $p_{j}$, definido como $0$ si dicha arista no existe.\\
+
+\section{Soluciones para el problema de calcular el PageRank}
+
+Se define la matriz $\widehat{M}$ como:
+
 \begin{equation}\label{mhat}
-\widehat{M} = M + \frac{1-d}{N}E
+\widehat{M} = \frac{1-d}{N}E + dM
 \end{equation}
-Donde $E$ es una matriz con todos sus valores iguales a $1$. Es fácil (es? quizás habría que deducirlo un poco) ver que combinando \eqref{pranksolution} 
-y \eqref{mhat} se obtiene:
+
+Donde $E$ es una matriz con todos unos.\\
+
+Facilmente se puede ver que la ecuación \eqref{pranksolution} es equivalente a la siguiente:
+
 \begin{equation}\label{eigenr}
 R = \widehat{M}R
 \end{equation}
-De la ecuación \eqref{eigenr} se puede deducir que la solución $R$ no es más que el autovector dominante con autovalor $1$ de la matriz de adyacencia 
-modificada $\widehat{M}$. Este vector existirá siempre y cuando $det\left|\widehat{M}-I\right| \neq 0 $ (pasa siempre?dem?). Dado que las filas y columnas de 
-$\widehat{M}$ suman $1$ (es estocástica), por círculos de Gershgorin el módulo de todos los autovalores deberá ser menor o igual a $1$, por lo que el autovector 
-es dominante. El autovalor será único asumiendo que existe una única distribución que satisface la ecuación \label{eigenr}, lo cual es equivalente a exigir 
-que $\widehat{M}$ sea inversible. (estaria bueno tirar por aca tipo asumiendo que la cadena de markov es logica bajo los conceptos de page rank bla bla
- estas cosas raras no pueden pasar etc etc).
-Por lo tanto, se puede calcular con el método de las potencias. Cabe destacar que como 
+
+\[
+    R = \frac{1-d}{N}ER + dMR
+\]
+
+\[
+    R = \begin{pmatrix}
+            (1-d)/N \\ (1-d)/N \\ \vdots \\ (1-d)/N
+        \end{pmatrix} + dMR
+\]
+
+($R \cdot \mathbf 1 = 1$, pues $R$ es una distribucion de probabilidades)\\
+
+La cadena de Markov con matriz de transición $\widehat{M}$ es irreducible y ergódica (todas las transiciones posibles tienen probabilidad mayor
+que $0$), por lo tanto R existe y es único.
+
+\subsection{Método de las potencias}
+
+De la ecuación \eqref{eigenr} se puede deducir que la solución $R$ no es más que el autovector dominante con autovalor $1$ de la matriz $\widehat{M}$.
+Dado que las filas y columnas de
+$\widehat{M}$ suman $1$ (es estocástica), por círculos de Gershgorin el módulo de todos los autovalores deberá ser menor o igual a $1$, por lo que el autovector
+es dominante. El autovalor será único dado que existe una única distribución que satisface la ecuación \eqref{eigenr}, lo cual es equivalente a exigir
+que $\widehat{M}$ sea inversible.
+Por lo tanto, se puede calcular $R$ con el método de las potencias. Cabe destacar que como
 $R$ es una distribución de probabilidades, el autovector debe estar normalizado.\\
-El método de las potencias 
-consiste en tomar un vector $v(0)$ inicializado 
+
+El método de las potencias
+consiste en tomar un vector $v(0)$ inicializado
 arbitrariamente e iterar según la regla:
 \begin{equation}
 v(t+1) = \widehat{M}v(t)
-\end{equation} 
+\end{equation}
 Normalizando $v(t+1)$ en cada paso, hasta que se cumpla:
 \begin{equation}
 \left| v(t+1) - v(t) \right| < \epsilon
 \end{equation}
-Donde $\epsilon$ es un error adecuado. El método de las potencias converge al autovalor dominante siempre y cuando la proyección del vector $v(0)$ a este 
+Donde $\epsilon$ es un error adecuado. El método de las potencias converge al autovalor dominante siempre y cuando la proyección del vector $v(0)$ a este
 último no sea nula.
+
+\subsection{Sistema lineal}
+
+De \eqref{pranksolution} se deduce:
+
+\begin{equation}
+    R (I - dM) = \begin{pmatrix}
+                     (1-d)/N \\ (1-d)/N \\ \vdots \\ (1-d)/N
+                 \end{pmatrix}
+\end{equation}
+
+Sistema lineal de la forma $Ax = b$ con $A = (I - dM)$, $x = R$, $b = (1-d)/N* \mathbf 1$, que puede ser resuelto con, por ejemplo, eliminación de Gauss-Jordan.\\
+
+Nota: se podría usar también $R(I-d\widehat{M}) = 0$, pero la matriz $\widehat{M}$ es mucho más densa que la matriz $M$.
+
+\section{Comparación}
+
+% TODO
+
+\section{Conclusión}
+
+% TODO
+% creo que acá no va a haber nada
 
 %----------------------------------------------------------------------
 % The bibliography. This bibliography was generated using the following
@@ -219,39 +273,19 @@ Donde $\epsilon$ es un error adecuado. El método de las potencias converge al a
 % The ieeecls.bbl file was manually included here to make the distribution
 % of this paper easier. You need not do it for your own papers.
 
-%\clearpage
+\clearpage
 
-%\begin{thebibliography}{1}
+\section{References}
 
-%\bibitem{lamport1}
-%Fierens, P. (2011),
-%\newblock {\em Cuadrados mínimos: repaso},
-%\newblock Buenos Aires: Instituto Tecnológico de Buenos Aires.
+    [1] Brin, S.; Page, L. (1998). \emph{The anatomy of a large-scale hypertextual Web search engine.}
 
-%\bibitem{lamport1}
-%Abdi, H.,
-%\newblock {\em  Least-squares: {Encyclopedia for research methods for the social sciences}},
-%\newblock Thousand Oaks (CA): Sage. pp, 2003.
+    [2] Page, L. (1997). \emph{PageRank: Bringing Order to the Web.}
 
-%\bibitem{lamport1}
-%Farebrother, R.W. (1988),
-%\newblock {\em Linear Least Squares Computations, STATISTICS: Textbooks and Monographs}, %\newblock New York: Marcel Dekker.
+    [3] Bianchini, M.; Gori, M.; Scarselli, F. (2005). \emph{Inside PageRank.}
 
-%\bibitem{lamport1}
-%Lipson, M.; Lipschutz, S. (2001),
-%\newblock {\em Schaum's outline of theory and problems of linear algebra}, 
-%newblock New York: McGraw-Hill, pp. 69–80.
-
-
-%\end{thebibliography}
-
-%----------------------------------------------------------------------
-
+    [4] Langville, A.; Meyer, C. (2004). \emph{Deeper Inside PageRank.}
 
 \clearpage
 
-
-
-
-
 \end{document}
+
