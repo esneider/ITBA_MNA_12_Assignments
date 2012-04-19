@@ -1,7 +1,7 @@
 % I incidence matrix
 function [M] = adj_matrix(I)
 
-    M = I
+    M = I;
     N = length(I);
 
     for i=1:N
@@ -20,7 +20,7 @@ endfunction
 function [M_hat] = super_M(M, d)
 
     N = length(M);
-    M_hat = ones(N, N).*((1-d)/N) + M.*d;
+    M_hat = transpose(ones(N, N).*((1-d)/N) + M.*d);
 endfunction
 
 
@@ -28,8 +28,10 @@ endfunction
 % d damping factor
 function [R] = solve_as_linear_system(I, d)
 
-    R = super_M(adj_matrix(I), d) \ zeros(length(I));
-enfunction
+    N = length(I);
+    R = (eye(N) - d*super_M(adj_matrix(I), d)) \ (((1-d)/N) .* ones(N, 1));
+    R ./= norm(R, 1);
+endfunction
 
 
 % I incidence matrix
@@ -37,7 +39,9 @@ enfunction
 % error
 function [R] = solve_with_power_method(I, d, error)
 
-    R = rand(length(I), 1);
+    N = length(I);
+
+    R = rand(N, 1);
     R ./= norm(R, 2);
     old_R = ones(N, 1) * inf;
 
@@ -48,11 +52,12 @@ function [R] = solve_with_power_method(I, d, error)
         R = M * R;
         R ./= norm(R, 2);
     endwhile
+
+    R ./= norm(R, 1);
 endfunction
 
 
-I =
-[
+I = [
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
       0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0;
       0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0;
@@ -70,7 +75,6 @@ d = 0.85;
 
 error = 1e-3;
 
-solve_as_linear_system(I, d)
-
-solve_with_power_method(I, d, error)
+LS = solve_as_linear_system(I, d)
+PM = solve_with_power_method(I, d, error)
 
