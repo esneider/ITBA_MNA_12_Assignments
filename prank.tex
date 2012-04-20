@@ -203,7 +203,7 @@ De la ecuación \eqref{eigenr} se puede deducir que la solución $R$ no es más 
 Dado que las filas y columnas de
 $\widehat{M}$ suman $1$ (es estocástica), por círculos de Gershgorin el módulo de todos los autovalores deberá ser menor o igual a $1$, por lo que el autovector
 es dominante. El autovalor será único si existe una única distribución que satisface la ecuación \eqref{eigenr}, lo cual es equivalente a exigir
-que $Rg\left(\widehat{M}-I\right) = N-1$ y no menor.
+que $Rg\left(\widehat{M}-I\right) = N-1$ y no menor.Esto trae a la mesa el interesante trade-off de tiempo versus factor de amortiguamiento, que es un dato empírico. Sería interesante analizar
 Si se cumple, se puede calcular $R$ con el método de las potencias. Cabe destacar que como
 $R$ es una distribución de probabilidades, el autovector debe estar normalizado.\\
 
@@ -217,8 +217,20 @@ Normalizando $v(t+1)$ en cada paso, hasta que se cumpla:
 \begin{equation}
 \left| v(t+1) - v(t) \right| < \epsilon
 \end{equation}
-Donde $\epsilon$ es un error adecuado. El método de las potencias converge al autovalor dominante siempre y cuando la proyección del vector $v(0)$ a este
-último no sea nula.
+Donde $\epsilon$ es un error adecuado. El método de las potencias converge al autovalor dominante siempre y cuando la proyección del
+vector $v(0)$ a este último no sea nula.\\
+
+El ritmo asintótico de convergencia de este método está gobernado por el autovalor subdominante. Este autovalor está acotado
+superiormente por $d$, el factor de amortiguamiento [4]. En la figura 1, se puede ver que para $0.5 \leq d \leq 0.9$, el
+factor de amortiguamiento afecta linealmente el tiempo de ejecución del algoritmo.
+Esto trae a la mesa el interesante trade-off de tiempo versus factor de amortiguamiento, que es un dato empírico. Habría que
+ analizar cuánto cambia la solución al variar $d$.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{d_pm.png} % [scale=0.75]
+    \caption {Gráfico del tiempo de ejecución del método de las potencias en función de el factor de amortiguamiento, para un grafo de 100 sitios.}
+\end{figure}
 
 \subsection{Sistema lineal}
 
@@ -230,18 +242,32 @@ De \eqref{pranksolution} se deduce:
                  \end{pmatrix}
 \end{equation}
 
-Sistema lineal de la forma $Ax = b$ con $A = (I - dM)$, $x = R$, $b = (1-d)/N* \mathbf 1$, que puede ser resuelto con, por ejemplo, eliminación de Gauss-Jordan.\\
+Sistema lineal de la forma $Ax = b$ con $A = (I - dM)$, $x = R$, $b = (1-d)/N* \mathbf 1$, que puede ser resuelto con, por ejemplo,
+ eliminación de Gauss-Jordan o el método de Jacobi.\\
 
-Nota: se podría usar también $R(I-d\widehat{M}) = 0$, pero la matriz $\widehat{M}$ es mucho más densa que la matriz $M$.
+Nota: se podría usar también $R(I-d\widehat{M}) = 0$, pero la matriz $\widehat{M}$ es mucho más densa que la matriz $M$, que es, en
+ general, algo deseable.
 
-\section{Comparación}
+\section{Comparación y conclusiones}
 
-% TODO
+Los grafos sobre los que se probaron los algoritmos fueron genreados proceduralmente, con factores aleatorios,
+teniendo cuidado en conservar las características de un grafo web real (a saber, la cantidad total de links es
+$\Theta($cantidad de sitios$)$).\\
 
-\section{Conclusión}
+Se implementarion 3 algoritmos: el método de las potencias, la resolución del sistema lineal con el método de Jacobi, y la resolución
+ del sistema lineal con el método que usa nativamente octave.
 
-% TODO
-% creo que acá no va a haber nada
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{octave_jacobi_pm.png} % [scale=0.75]
+    \caption {Gráfico del tiempo de ejecución de los tres algoritmos para grafos web de 20 a 1000 sitios.}
+\end{figure}
+
+Es interesante ver (figura 2) que la forma clásica de resolverlo y la resolución por sistema lineal (octave), tienen tiempos bastante similares;
+ variando, aparentemente, por tan solo una constante multiplicativa pequeña.
+Además, se pueden añadir varias mejoras a ambos algoritmos aún [4] (esta fue una implementacion de los algoritmos básicos), por lo que
+ no hay un ganador claro.
+Siendo así muy prometedor el nuevo encare por sistemas lineales de ecuaciónes, que todavía no está tan explorado.
 
 %----------------------------------------------------------------------
 % The bibliography. This bibliography was generated using the following
@@ -273,7 +299,7 @@ Nota: se podría usar también $R(I-d\widehat{M}) = 0$, pero la matriz $\widehat
 % The ieeecls.bbl file was manually included here to make the distribution
 % of this paper easier. You need not do it for your own papers.
 
-\clearpage
+\newpage
 
 \section{References}
 
@@ -285,7 +311,6 @@ Nota: se podría usar también $R(I-d\widehat{M}) = 0$, pero la matriz $\widehat
 
     [4] Langville, A.; Meyer, C. (2004). \emph{Deeper Inside PageRank.}
 
-\clearpage
 
 \end{document}
 
