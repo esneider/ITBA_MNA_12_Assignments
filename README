@@ -13,3 +13,5 @@ Bibliografía
 * http://en.wikipedia.org/wiki/PageRank
 * http://www.math.muni.cz/~xslesing/teaching/pagerank/DeeperInsidePR.pdf
 
+* Levering, R., and M. Cutler, "The Portrait of a Common HTML Web Page,"
+  in DocEng 2006 (Amsterdam, The Netherlands: October 10-13, 2006), 198-204. Found that the average web page contained 474 words, 281 HTML tags, and 41 links, 10 of which pointed outside the domain. Also found that the average web page was 1440 pixels in height. Table nesting depth was 2.95.
