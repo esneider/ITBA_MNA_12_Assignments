@@ -111,7 +111,7 @@ d = 0.85;
 
 error = 1e-7;
 
-max_links = 15;
+max_links = 20;
 
 LS = [];
 PM = [];

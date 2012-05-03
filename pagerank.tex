@@ -31,6 +31,7 @@
 \usepackage{float}
 \usepackage{fancyvrb}
 \usepackage{subfigure}
+\usepackage{listings}
 
 \newcommand{\latexiie}{\LaTeX2{\Large$_\varepsilon$}}
 
@@ -116,120 +117,116 @@ En la sección IV se exponen los dos métodos de solución y se comparan experim
 
 \section{Modelado del problema}
 
-\par El conjunto de los sitios web puede ser representado como un grafo, donde cada sitio es un nodo. Existe una arista dirigida entre dos nodos si
-desde el primer sitio hay un hipervínculo al segundo. A cada uno de los nodos se le asigna un valor representando la probabilidad de que
-una cierta persona navegando por Internet esté observando dicho sitio, denominado el \textit{PageRank} del sitio.
-En cada época o iteración, dicha persona puede decidir quedarse en ese sitio definitivamente o desplazarse a otro sitio por medio de un hipervínculo
-(con probabilidad $d$, llamado factor de amortiguamiento).
-Nótese que el factor de amortiguamiento no puede ser representado como un lazo, ya que una vez que se decide quedarse en un sitio, el proceso finaliza.\\
+\par El conjunto de los sitios web puede ser representado como un digrafo, donde cada sitio es un nodo. Existe una arista dirigida entre dos nodos si
+desde el primer sitio hay un hipervínculo al segundo. El \textit{PageRank} de cada sitio (nodo) es la probabilidad de que una persona apretando hipervínculos al azar
+llegue a ese sitio (nodo).
+En cada momento o iteración, dicha persona esta en un sitio y puede desplazarse a otro sitio por un hipervínculo al azar (con probabilidad $d$,
+llamado factor de amortiguamiento), o ingresar a un sitio al azar de toda la web (usar la barra de direcciones del navegador).
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/pagerank.png} % [scale=0.75]
+    \caption{PageRanks, representados como porcentajes, de una red simple. Nótese que el sitio C tiene un PageRank alto, a pesar de tener solo una arista
+             entrante, por ser esta de un sitio importante.}
+\end{figure}
+%%
 
 En vista de dichas propiedades, este grafo puede ser visto como una cadena de Markov: se toman las probabilidades iniciales de
 estar en cualquier nodo uniformemente, y las probabilidades de abrir un hipervínculo de un mismo nodo también uniformemente. Además no existen
-estados absorbentes; si un sitio no tiene hipervínculos, se asume que un usuario podría ingresar el nombre de un nuevo sitio en el navegador, por lo que
-se generan aristas desde dicho estado absorbente a todos los demás estados del grafo. Debido a que un usuario podría hacer esto incluso en estados
-que no son abosrbentes, se suele agregar dichas aristas en todos los nodos, con una probabilidad residual igual al factor de amortiguamiento.\\
+estados absorbentes; se asume que en cualquier momento un usuario podría ingresar (con probabilidad $1-d$) el nombre de cualquier otro sitio en el navegador, con distribución
+uniforme, nuevamente.\\
 
-El vector de probabilidades al que converge dicha cadena de Markov representa el peso o importancia de cada sitio.
+El vector de probabilidades al que converge dicha cadena de Markov, representa el peso o importancia de cada sitio: el PageRank, que es una distribucción de probabilidades.
+Por lo tanto, el vector debe estar normalizado.
 
 \section{Marco algebraico}
 
-\par Para empezar, se debe calcular el valor del \textit{PageRank} de un nodo $p_{k}$. Dicho valor se calcula con la suma de la probabilidad de que el usuario
-decida quedarse indefinidamente en el nodo, y aquella asignada a que el usuario haya llegado al sitio a través de un hipervínculo. La probabilidad
-de haber navegado por un hipervínculo, es decir el factor de amortiguamiento $d$, vale aproximadamente $0,85$ (establecido empíricamente [1]).
+\par Se debe calcular $PR(p_i)$, el valor del \textit{PageRank} de un nodo $p_i$. Dicho valor se calcula como la suma de la probabilidad de haber
+llegado por la barra de direcciones (con probabilidad $(1-d)/N$), y haber venido por un hipervínculo de un sitio o nodo $p$: \\
 
 \begin{equation}\label{pranknode}
-PR(p_i) = \frac{1-d}{N} + d \sum_{p \in M_{p_{i}}} \frac{PR(p)}{L(p)}
+    PR(p_i) = \frac{1-d}{N} + d \sum_{p \in M_{p_{i}}} \frac{PR(p)}{L(p)}
 \end{equation}
 
-Donde $L(p)$ es el grado de salida del nodo $p$, $N$ es la cantidad total de nodos, y $M_{p_i}$ es el conjunto de los nodos directamente alcanzables
-desde $p_i$.\\
+Donde $L(p)$ es el grado de salida del nodo $p$, $N$ es la cantidad total de nodos, y $M_{p_i}$ es el conjunto de los nodos que alcanzan directamente a $p_i$.\\
 
-Aplicando la ecuación \eqref{pranknode} a todos los nodos y exigiendo que el \textit{PageRank} de cada nodo converja a un valor,
-se obtiene una nueva ecuación en forma matricial:
+Nota: La probabilidad de haber llegado a través de un hipervínculo, es decir el factor de amortiguamiento $d$, vale aproximadamente $0,85$ (establecido empíricamente [1]).
+
+Aplicando la ecuación \eqref{pranknode} a todos los nodos, se obtiene una nueva ecuación en forma matricial:
 
 \begin{equation}\label{pranksolution}
-R = \begin{pmatrix}
-(1-d)/N \\ (1-d)/N \\ \vdots \\ (1-d)/N
-\end{pmatrix} + dMR
+    R = \begin{pmatrix}
+            (1-d)/N \\ (1-d)/N \\ \vdots \\ (1-d)/N
+        \end{pmatrix}
+        + dMR
 \end{equation}
 
-Donde $R$ es el vector de \textit{PageRanks} y $M$ es la matrix de adyacencia del grafo:
+Donde $R$ es el vector de \textit{PageRanks} y $M_{i,j}$ se define como $L(p_j)^{-1}$ si existe un hipervínculo en $p_j$ hacia $p_i$, y $0$ sino.
 
-\begin{equation}\label{M}
-M=\begin{pmatrix}
-l(p_{1},p_{1}) & l(p_{1},p_{2}) & \cdots & l(p_{1},p_{N}) \\
-l(p_{2},p_{1}) & \ddots & & \vdots \\
-\vdots & & l(p_{i}, p_{j}) & \\
-l(p_{N},p_{1}) & \cdots &  & l(p_{N},p_{N})
-\end{pmatrix}
-\end{equation}
-
-Con $l(p_{i},p_{j})$ siendo el peso de la arista desde nodo $p_{i}$ hacia el nodo $p_{j}$, definido como $0$ si dicha arista no existe.\\
+\[
+    R_i = \frac{1-d}{N} + d \sum_{j=1}^{N} M_{i,j} R_j
+\]
 
 \section{Soluciones para el problema de calcular el PageRank}
 
 Se define la matriz $\widehat{M}$ como:
 
 \begin{equation}\label{mhat}
-\widehat{M} = \frac{1-d}{N}E + dM
+    \widehat{M} = \frac{1-d}{N}E + dM
 \end{equation}
 
 Donde $E$ es una matriz con todos unos.\\
 
-Fácilmente se puede ver que la ecuación \eqref{pranksolution} es equivalente a la siguiente:
+Usando la ecuación \eqref{pranksolution}:
 
-\begin{equation}\label{eigenr}
-R = \widehat{M}R
-\end{equation}
+\begin{eqnarray}
+    R &=& \begin{pmatrix}
+              (1-d)/N \\ (1-d)/N \\ \vdots \\ (1-d)/N
+          \end{pmatrix}
+          + dMR \nonumber\\
+      &=& \frac{1-d}{N}ER + dMR \nonumber\\
+      &=& \widehat{M}R \label{eigenr}
+\end{eqnarray}
 
-\[
-    R = \frac{1-d}{N}ER + dMR
-\]
+($E_i \cdot R = 1$, pues $R$ es una distribución de probabilidades)\\
 
-\[
-    R = \begin{pmatrix}
-            (1-d)/N \\ (1-d)/N \\ \vdots \\ (1-d)/N
-        \end{pmatrix} + dMR
-\]
-
-($R \cdot \mathbf 1 = 1$, pues $R$ es una distribucion de probabilidades)\\
-
-La cadena de Markov con matriz de transición $\widehat{M}$ es irreducible y ergódica (todas las transiciones posibles tienen probabilidad mayor
-que $0$), por lo tanto R existe y es único.
+La cadena de Markov con matriz de transición $\widehat{M}$ es ergódica y regular (ya que todas las transiciones son no nulas) y, por lo tanto, R existe y es único (teorema ergódico).
 
 \subsection{Método de las potencias}
 
-De la ecuación \eqref{eigenr} se puede deducir que la solución $R$ no es más que el autovector dominante con autovalor $1$ de la matriz $\widehat{M}$.
 Dado que las filas y columnas de
-$\widehat{M}$ suman $1$ (es estocástica), por círculos de Gershgorin el módulo de todos los autovalores deberá ser menor o igual a $1$, por lo que el autovector
-es dominante. El autovalor será único si existe una única distribución que satisface la ecuación \eqref{eigenr}, lo cual es equivalente a exigir
-que $Rg\left(\widehat{M}-I\right) = N-1$ y no menor.Esto trae a la mesa el interesante trade-off de tiempo versus factor de amortiguamiento, que es un dato empírico. Sería interesante analizar
+$\widehat{M}$ suman $1$ (es estocástica), por círculos de Gershgorin el módulo de todos los autovalores deberá ser menor o igual a $1$.
+De la ecuación \eqref{eigenr} se puede deducir que la solución $R$ no es más que el autovector dominante con autovalor $1$ de la matriz $\widehat{M}$.
+El autovalor será único si existe una única distribución que satisface la ecuación \eqref{eigenr}, lo cual es equivalente a exigir
+que $Rg\left(\widehat{M}-I\right) = N-1$ y no menor.
 Si se cumple, se puede calcular $R$ con el método de las potencias. Cabe destacar que como
 $R$ es una distribución de probabilidades, el autovector debe estar normalizado.\\
 
-El método de las potencias
-consiste en tomar un vector $v(0)$ inicializado
-arbitrariamente e iterar según la regla:
+El método de las potencias consiste en tomar un vector $v(0)$ e iterar según la regla:
+
 \begin{equation}
-v(t+1) = \widehat{M}v(t)
+    v(t+1) = \widehat{M}v(t)
 \end{equation}
+
 Normalizando $v(t+1)$ en cada paso, hasta que se cumpla:
+
 \begin{equation}
-\left| v(t+1) - v(t) \right| < \epsilon
+    \left| v(t+1) - v(t) \right| < \epsilon
 \end{equation}
+
 Donde $\epsilon$ es un error adecuado. El método de las potencias converge al autovalor dominante siempre y cuando la proyección del
 vector $v(0)$ a este último no sea nula.\\
 
 El ritmo asintótico de convergencia de este método está gobernado por el autovalor subdominante. Este autovalor está acotado
 superiormente por $d$, el factor de amortiguamiento [4]. En la figura 1, se puede ver que para $0.5 \leq d \leq 0.9$, el
 factor de amortiguamiento afecta linealmente el tiempo de ejecución del algoritmo.
-Esto trae a la mesa el interesante trade-off de tiempo versus factor de amortiguamiento, que es un dato empírico. Habría que
+Esto trae a la mesa el interesante trade-off de tiempo de ejecución versus factor de amortiguamiento $d$, que es un dato empírico. Habría que
  analizar cuánto cambia la solución al variar $d$.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.5\textwidth]{img/d_pm.png} % [scale=0.75]
-    \caption {Gráfico del tiempo de ejecución del método de las potencias en función de el factor de amortiguamiento, para un grafo de 100 sitios.}
+    \caption{Gráfico del tiempo de ejecución del método de las potencias en función de el factor de amortiguamiento, para un grafo de 100 sitios.}
 \end{figure}
 
 \subsection{Sistema lineal}
@@ -237,37 +234,47 @@ Esto trae a la mesa el interesante trade-off de tiempo versus factor de amortigu
 De \eqref{pranksolution} se deduce:
 
 \begin{equation}
-    R (I - dM) = \begin{pmatrix}
+    (I - dM) R = \begin{pmatrix}
                      (1-d)/N \\ (1-d)/N \\ \vdots \\ (1-d)/N
                  \end{pmatrix}
 \end{equation}
 
-Sistema lineal de la forma $Ax = b$ con $A = (I - dM)$, $x = R$, $b = (1-d)/N* \mathbf 1$, que puede ser resuelto con, por ejemplo,
+Sistema lineal de la forma $Ax = b$ con $A = I - dM$, $x = R$, $b = (\tfrac{1-d}{N},...,\tfrac{1-d}{N})^T$, que puede ser resuelto con, por ejemplo,
  eliminación de Gauss-Jordan o el método de Jacobi.\\
 
-Nota: se podría usar también $R(I-d\widehat{M}) = 0$, pero la matriz $\widehat{M}$ es mucho más densa que la matriz $M$, que es, en
+Nota: se podría usar también $R(I-d\widehat{M}) = 0$, pero la matriz $M$ es mucho menos densa que la matriz $\widehat{M}$ , que es, en
  general, algo deseable.
 
 \section{Comparación y conclusiones}
 
-Los grafos sobre los que se probaron los algoritmos fueron genreados proceduralmente, con factores aleatorios,
-teniendo cuidado en conservar las características de un grafo web real (a saber, la cantidad total de links es
-$\Theta($cantidad de sitios$)$).\\
+%%TODO!!
 
-Se implementarion 3 algoritmos: el método de las potencias, la resolución del sistema lineal con el método de Jacobi, y la resolución
- del sistema lineal con el método que usa nativamente octave.
+Los grafos sobre los que se probaron los algoritmos fueron generados proceduralmente, aleatoriamente,
+teniendo cuidado en conservar las características de un grafo web real (a saber, la cantidad total de links es
+$\Theta($cantidad de sitios$)$):
+
+\lstset{language=Octave,basicstyle=\footnotesize}
+
+\begin{lstlisting}
+    M = N * rand(N) < AvgLinksPerPage
+\end{lstlisting}
+
+Con AvgLinksPerPage = 10 [5].\\
+
+Se implementaron 3 algoritmos: el clásico método de las potencias, y la alternativa que ha empezado a estudiar más recientemente: la resolución del
+sistema lineal, con el método de Jacobi y con el método que usa nativamente octave.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.5\textwidth]{img/octave_jacobi_pm.png} % [scale=0.75]
-    \caption {Gráfico del tiempo de ejecución de los tres algoritmos para grafos web de 20 a 1000 sitios.}
+    \caption{Gráfico del tiempo de ejecución de los tres algoritmos para grafos web de 20 a 1000 sitios.}
 \end{figure}
 
 Es interesante ver (figura 2) que la forma clásica de resolverlo y la resolución por sistema lineal (octave), tienen tiempos bastante similares;
  variando, aparentemente, por tan solo una constante multiplicativa pequeña.
 Además, se pueden añadir varias mejoras a ambos algoritmos aún [4] (esta fue una implementacion de los algoritmos básicos), por lo que
  no hay un ganador claro.
-Siendo así muy prometedor el nuevo encare por sistemas lineales de ecuaciónes, que todavía no está tan explorado.
+Siendo así muy prometedor el nuevo encare por sistemas lineales de ecuaciones, que todavía no está tan explorado.
 
 %----------------------------------------------------------------------
 % The bibliography. This bibliography was generated using the following
@@ -311,6 +318,7 @@ Siendo así muy prometedor el nuevo encare por sistemas lineales de ecuaciónes,
 
     [4] Langville, A.; Meyer, C. (2004). \emph{Deeper Inside PageRank.}
 
+    [5] Levering, R.; and M. Cutler. \emph{The Portrait of a Common HTML Web Page}, in DocEng 2006: "Found that the average web page contained 474 words, 281 HTML tags, and 41 links, 10 of which pointed outside the domain"
 
 \end{document}
 
