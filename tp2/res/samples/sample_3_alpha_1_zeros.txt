@@ -1,0 +1,2 @@
+zeros =  0.92483
+mean_square_error = 10
