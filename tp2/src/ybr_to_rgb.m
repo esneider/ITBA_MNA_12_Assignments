@@ -9,7 +9,7 @@ function ret = ybr_to_rgb(M)
 			ybr(3) = M(i,j,3) - 128;
 			aux = coef_matrix * ybr;
 			for k = 1:3
-				ret(i,j,k) = aux(k);
+				ret(i,j,k) = round(aux(k));
 			end
 		end
 	end
