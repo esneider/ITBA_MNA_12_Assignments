@@ -20,11 +20,11 @@ function encode_and_decode(inimg, outimg, diffimg, alpha)
 			end
 		end
 	end
-	B = quantify(B,1);
+	B = quantify(B,alpha);
 	%Done encoding! Calculate stuff here...
 	zeros = calc_zeros(B)
 	%Now decode
-	B = dequantify(B,1);
+	B = dequantify(B,alpha);
 	for b = 1:size(B,1)
 		for k = 1:3
 			for i = 1:8
@@ -44,6 +44,7 @@ function encode_and_decode(inimg, outimg, diffimg, alpha)
 	B = blocks_to_img(B, size(I,1), size(I,2));
 	B = ybr_to_rgb(B);
 	B = uint8(B);
+	mean_square_error = calc_error(I-B)
 	imwrite(B,outimg);
 	imwrite(abs(I-B), diffimg);
 endfunction
