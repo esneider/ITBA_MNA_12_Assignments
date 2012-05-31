@@ -289,7 +289,9 @@ archivo. Sin embargo, se pueden modificar algunos datos para reducir aún más l
 ordenando los valores según qué frecuencia representan. 
 
 \begin{figure}[H]
+	\begin{center}
 	\includegraphics[scale=0.5]{./img/zig-zag.jpg}
+	\end{center}
 \end{figure}
 \begin{center}
 \par Figura 1: Reordenamiento de los valores según su frecuencia
@@ -383,14 +385,18 @@ el pixel del borde más cercano.
 colores verdes y magenta (ver figuras 2 y 3).
 
 \begin{figure}[H]
+	\begin{center}
 	\includegraphics[scale=3]{./img/facebookout.png}
+	\end{center}
 \end{figure}
 \begin{center}
 \par Figura 2: Rellenado usando pixel del borde. Imagen ampliada, factor 3. Factor $\alpha=1$.
 \end{center}
 
 \begin{figure}[H]
+	\begin{center}
 	\includegraphics[scale=3]{./img/facebookout0.png}
+	\end{center}
 \end{figure}
 \begin{center}
 \par Figura 3: Rellenado usando ceros. Imagen ampliada, factor 3. Factor $\alpha=1$.
@@ -401,7 +407,9 @@ colores verdes y magenta (ver figuras 2 y 3).
 Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocurrida (ver figura 4 o Anexo A).
 
 \begin{figure}[H]
+	\begin{center}
 	\includegraphics[scale=3]{./img/chrome3out.png}
+	\end{center}
 \end{figure}
 \begin{center}
 \par Figura 4: Logo de \textit{chrome} ampliado con un factor de 3. Factor $\alpha=3$ para hacer más vistosos los bloques.
@@ -423,57 +431,75 @@ Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocur
 \bibitem{lamport1}
 \newblock {\em{http://www.cmlab.csie.ntu.edu.tw/cml/dsp/training/coding/jpeg/jpeg/encoder.htm}}
 
+\end{thebibliography}
 
-\onecolumn
+
+
 
 \clearpage
+
+\onecolumn
 
 \section*{Anexo A: Imagenes y sus codificaciones. Factor $\alpha = 1$ en todos los casos.}
 
 \begin{figure}[H]
+	\begin{center}
 	\includegraphics[scale=0.7]{./img/lenacolor.png}
+	\end{center}
 \end{figure}
 \begin{center}
 \par Figura 5: Imagen de Lenna de 512x512 pixeles.
 \end{center}
 
 \begin{figure}[H]
+	\begin{center}
 	\includegraphics[scale=0.7]{./img/lenaout.png}
+	\end{center}
 \end{figure}
 \begin{center}
 \par Figura 6: Imagen de Lenna de 512x512 pixeles tras codificar.
 \end{center}
 
 \begin{figure}[H]
+	\begin{center}
 	\includegraphics[scale=0.7]{./img/lenadif.png}
+	\end{center}
 \end{figure}
 \begin{center}
 \par Figura 7: Diferencia entre las figuras 5 y 6, imperceptible.
 \end{center}
 
 \begin{figure}[H]
+	\begin{center}
 	\includegraphics[scale=3]{./img/sample_1_in.jpg}
+	\end{center}
 \end{figure}
 \begin{center}
 \par Figura 8: \textit{Sample 1}, ampliada factor 3.
 \end{center}
 
 \begin{figure}[H]
+	\begin{center}
 	\includegraphics[scale=3]{./img/sample_1_alpha_1_out.jpg}
+	\end{center}
 \end{figure}
 \begin{center}
 \par Figura 9: \textit{Sample 1} tras la codificación, ampliada factor 3.
 \end{center}
 
 \begin{figure}[H]
+	\begin{center}
 	\includegraphics[scale=3]{./img/sample_3_in.jpg}
+	\end{center}
 \end{figure}
 \begin{center}
 \par Figura 10: \textit{Sample 3}, ampliada factor 3.
 \end{center}
 
 \begin{figure}[H]
+	\begin{center}
 	\includegraphics[scale=3]{./img/sample_3_alpha_1_out.jpg}
+	\end{center}
 \end{figure}
 \begin{center}
 \par Figura 11: \textit{Sample 3} tras la codificación, ampliada factor 3. Se pueden observarlos bloques.
@@ -482,14 +508,16 @@ Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocur
 \section*{Anexo B: Variación del factor $alpha$.}
 
 \begin{figure}[H]
+	\begin{center}
 	\includegraphics[scale=2.3]{./img/chromes.png}
+	\end{center}
 \end{figure}
 \begin{center}
 \par Figura 3: Codificación de varias imágenes del logo de \textit{Chrome} utilizando distintos valores de \textit{alpha}.
 \end{center}
 
 
-\end{thebibliography}
+
 
 %----------------------------------------------------------------------
 
@@ -552,7 +580,7 @@ Tabla 3: Comparación para distintos rellenados de imágenes, $\alpha=1$.
 
 \section*{Anexo D: Matrices de ejemplo}
 
-
+\begin{center}
 \( G = 
 \begin{pmatrix}
 
@@ -565,11 +593,13 @@ Tabla 3: Comparación para distintos rellenados de imágenes, $\alpha=1$.
 0.41 & 0.59 & 0.125 & -0.38 & -0.16 & -0.157 & 0.33 & 0.086 \\
 0.03 & -0.41 & -0.2 & 0.22 & 0.34 & 0.41 & 0.19 & 0.36 \\
 \end{pmatrix}\)
+\end{center}
 \begin{center}
-Ejemplo de una matriz salida, correspondiente a la luma del primer bloque de la imagen \textit{Sample 1}. Nótese 
+\par Ejemplo de una matriz salida, correspondiente a la luma del primer bloque de la imagen \textit{Sample 1}. Nótese 
 que los números de mayor magnitud se encuentran en la zona superior izquierda.
 \end{center}
 
+\begin{center}
 \( By = 
 \begin{pmatrix}
 3 & -11 & -1 & -1 & 0 & 0 & 0 & 0 \\
@@ -581,7 +611,7 @@ que los números de mayor magnitud se encuentran en la zona superior izquierda.
 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
 \end{pmatrix}\)
-
+\end{center}
 \begin{center} Ejemplo de una matriz tras ser cuantificada, correspondiente al primer bloque de la luma de \textit{Sample 1}.
 \end{center}
 
