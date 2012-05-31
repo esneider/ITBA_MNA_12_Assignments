@@ -166,7 +166,7 @@ importante para el ojo humano, se puede hacer una mayor compresión de datos.
 \subsection{Separación en bloques}
 
 \par Luego de la transformación a los canales $Y^{'}C_BC_R$, la imágen se debe separar en bloques, que representan 
-las "pequeñas zonas" en las cuales se desea eliminar las frecuencias altas de luma y croma. El tamaño de los bloques 
+las pequeñas zonas en las cuales se desea eliminar las frecuencias altas de luma y croma. El tamaño de los bloques 
 depende de la tasa de submuestreo de croma usada, y varía entre cuadrados de 8 pixeles y 16 pixeles. Dado que 
 no se utilizó submuestreo, se utilizaron bloques de 8.
 \par En el caso de que las dimensiones de la imágen no sean múltiplos del tamaño del bloque, se procede a extenderla 
@@ -418,30 +418,30 @@ el pixel del borde más cercano.
 
 
 \par Se puede verificar que si se rellena con ceros, el borde de la imagen presenta distorsiones de los 
-colores verdes y magenta (ver imágenes 1 y 2).
+colores verdes y magenta (ver figuras 2 y 3).
 
 \begin{figure}[H]
 \centering
 	\includegraphics[scale=3]{./img/facebookout.png}
-	\caption{Imagen 1. Rellenado usando pixel del borde. Imagen ampliada, factor 5. Factor $\alpha=1$.}
+	\caption{Rellenado usando pixel del borde. Imagen ampliada, factor 3. Factor $\alpha=1$.}
 \label{lenna128}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 	\includegraphics[scale=3]{./img/facebookout0.png}
-	\caption{Imagen 2. Rellenado usando ceros. Imagen ampliada, factor 5. Factor $\alpha=1$.}
+	\caption{Rellenado usando ceros. Imagen ampliada, factor 3. Factor $\alpha=1$.}
 \label{lenna128}
 \end{figure}
 
 \subsection{Bloques en ampliaciones de imagenes}
 
-Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocurrida (ver imagen 3 o Anexo A).
+Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocurrida (ver figura 4 o Anexo A).
 
 \begin{figure}[H]
 \centering
 	\includegraphics[scale=3]{./img/chrome3out.png}
-	\caption{Imagen 3. Logo de \textit{chrome} ampliado con un factor de 5. Factor $\alpha=3$ para hacer más vistosos los bloques.}
+	\caption{Logo de \textit{chrome} ampliado con un factor de 3. Factor $\alpha=3$ para hacer más vistosos los bloques.}
 \label{lenna128}
 \end{figure}
 
