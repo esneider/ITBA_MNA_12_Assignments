@@ -94,18 +94,18 @@ JPEG, compresión de imágenes, transformada discreta coseno, cuantización.
 \section{Introducción}
 
 \par Históricamente la compresión de datos siempre ha sido de notable interés para la informática,  
-ya sea para guardar algún archivo en algún dispositivo de capacidad limitada o para enviar un 
+ya sea para guardar un archivo en algún dispositivo de capacidad limitada o para enviar un 
 archivo por algún enlace utilizando la menor cantidad de banda ancha posible.
  Debido a estos requerimientos, surgen los primeros programas que haciendo uso de técnicas de compresión de datos, 
  por ejemplo \textit{Run Length Encoding} o 
 codificación de \textit{Huffman}, comprimen y descomprimen archivos. Algunos ejemplos incluyen 
 \textit{Winzip}, lanzado en 1991, o \textit{Winrar}, lanzado en 1993. Sin embargo en el caso de las imágenes, 
-debido a la naturaleza de sus datos, existen mejores alternativas para comprimirlas. Ya en el 1992, 
+debido a la naturaleza de sus datos, existen mejores alternativas para comprimirlas. Ya en el año 1992, 
 un comité conocido como \textit{Join Photographic Experts Group} comienza a publicar pautas 
 para la compresión de imágenes, conocidas como la especificación \textit{JPEG}. 
 \par La especificación original de JPEG, en la cual se centra este trabajo, indica que la compresión de las 
-imágenes consiste en dos etapas fundamentales: una codificación con pérdida de información, es decir \textit{lossy}, 
-seguida de una compresión \textit{lossless}, como por ejemplo las dos ya mencionadas. En esta primer etapa 
+imágenes consiste en dos etapas fundamentales: una codificación con pérdida de información,  
+seguida de una compresión sin pérdida, como por ejemplo las dos ya mencionadas. En esta primer etapa 
 existen dos maneras de reducir la información: \textit{chroma subsampling} y \textit{DCT Quantization}. La primera, 
 la cual no es analizada en este trabajo, consiste en aprovechar que el ojo humano tiene una menor agudeza 
 para diferenciar colores que brillantez o \textit{luma}, por lo cual se reduce la resolución de la croma. La segunda 
@@ -118,8 +118,8 @@ efectivo.
 \par El objetivo primordial del trabajo es analizar la técnica de \textit{DCT Quantization} para distintas 
 imágenes y matrices de cuantización, analizando en cada caso la tasa de compresión, el error introducido a la 
 imagen recuperada y su distorsión gráfica. La sección 2 explica en profundidad la primer etapa de la compresión. 
-La sección 3 trata sobre la segunda etapa de compresión. La sección 3 explica brevemente cómo recuperar 
-la imagen. La sección 4 contiene los resultados.
+La sección 3 trata sobre la segunda etapa de compresión. La sección 4 explica brevemente cómo recuperar 
+la imagen. La sección 5 contiene los resultados.
 
 %----------------------------------------------------------------------
 % SECTION II: Marco Teórico
@@ -161,14 +161,13 @@ depende de la tasa de submuestreo de croma usada, y varía entre cuadrados de 8 
 no se utilizó submuestreo, se utilizaron bloques de 8.
 \par En el caso de que las dimensiones de la imágen no sean múltiplos del tamaño del bloque, se procede a extenderla 
 hasta que los bloques quepan perfectamente. Los nuevos pixeles son llenados utilizando información de sus vecinos más 
-inmediatos. Otras alternativas analizadas incluyen llenar los canales de los nuevos pixeles con 0, sin embargo se observaron 
-mayores distorsiones en los bordes.
+inmediatos. Otras alternativas analizadas incluyen llenar los canales de los nuevos pixeles con 0.
 
 \subsection{Transformación del Coseno Discreta}
 
 El siguiente paso consiste en transformar los valores de los canales en cada bloque a sus 
 frecuencias espaciales en dos dimensiones, 
-utilizando la transformación del coseno discreta. Esta última consiste en una transformada 
+utilizando la transformación del coseno discreta de tipo II. Esta última consiste en una transformada 
 de Fourier discreta utilizando únicamente cosenos. Para una cierta matriz cuadrada, la transformada está 
 dada por la ecuación:
 
@@ -190,7 +189,7 @@ En ambas ecuaciones:
 \begin{equation}
 	\alpha(k) = \left \{
 		\begin{array}{rl}
-			\sqrt{1} & \mbox{si } k = 0 \\ 
+			1 & \mbox{si } k = 0 \\ 
 			\sqrt{2} & \mbox{en otro caso} \\
 		\end{array}
 		\right.
@@ -201,10 +200,12 @@ es decir en la zona superior
 izquierda de la matriz de frecuencias. Similarmente los coeficientes de las frecuencias más altas se encuentran 
 en la zona inferior derecha. Esta transformación concentra la señal de entrada en las frecuencias espaciales más bajas, 
 es decir en la zona superior izquierda. En particular, comúnmente el mayor valor en módulo es $G_{0,0}$. 
-Este valor representa la frecuencia con valor 0, y por lo tanto es un promedio de los 64 valores de entrada. A este 
+Este valor representa la frecuencia con valor 0, y por lo tanto es en esencia un promedio de los 64 valores de entrada
+ (con ciertas modificaciones, dado que se divide por $N$ y no por $N^{2}, y hay valores con mayor peso). A este 
 valor se lo llama $DC coefficient$ dado que en circuitos el promedio de una señal ( es decir el valor asociado 
 a la frecuencia cero) es la corriente efectiva directa ($DC$). Al resto de los valores se los llama $AC$ debido 
-a que representan la componente alterna de la corriente (referirse al anexo D para ver ejemplos).
+a que representan la componente alterna de la corriente. La transformada discreta del coseno tiende a 
+concentrar la señal en las frecuencias espaciales más bajas (ver anexo D).
 
 
 \par También es importante destacar que los valores de los canales son llevados a un rango 
@@ -266,7 +267,7 @@ cuantización tendrá una densidad de ceros considerable en esta última zona (r
 
 
 \par Se decidió además experimentar con distintas matrices de cuantificación. Para ello se multiplicó a las 
-matrices estándares por un cierto valor $\alpha$.
+matrices estándares de cuantización por un cierto valor $\alpha$.
 
 \section{Codificación entrópica}
 
@@ -318,10 +319,11 @@ posibles (pudiendo incrementar incluso la frecuencia de ceros marginalmente).
 utilizar la frecuencia relativa de valores de canales de pixeles con valor en 0. 
 Utilizando una codificación de \textit{Huffman}, 
 se le podría asignar a estos pixeles un único bit, en 0. En el peor de los casos, el resto de los valores 
-varía uniformemente entre $-127$ y $128$, por lo cual se necesitan 9 bits para almacenarlos (un 1 seguido 
+varía uniformemente entre $-127$ y $128$ (es muy difícil que los valores superen estas magnitudes tras 
+la cuantificación), por lo cual se necesitan 9 bits para almacenarlos (un 1 seguido 
 de la representación binaria del número).
 \par En la imagen original, se utilizan $24$ bits por pixel, $8$ por cada canal. Asumiendo que $p$ es la frecuencia 
-de valores de canales en 0, es fácil verificar que en promedio el valor de un canal necesitará:
+de valores de canales en 0, es fácil verificar que en promedio pixel necesitará:
 
 \begin{equation}
 b_{pixel}=3(p+9(1-p))
@@ -353,7 +355,7 @@ con los bloques. Finalmente se transforman dichos canales a los canales $RGB$.
 ceros en la imagen. Según la estimación planteada, esto reduce la cantidad de bits por pixel 
  a valores entre $4$ y $6$. Asimismo, se puede observar que el error es más de tres veces mayor en las imágenes de tipo 
 íconos, es decir alguna forma o figura sobre un fondo blanco, como el logo de \textit{Facebook} o \textit{Chrome}.
- Esto se debe a que en la frontera entre dicha figura y el fondo existen cambios brucos de luminosidad, 
+ Esto se debe a que en la frontera entre dicha figura y el fondo existen cambios bruscos de luminosidad, 
  que serán suavizados en la codificación. Esto incrementa el error cuadrático medio y hace que 
  el contorno de la figura se distorsione. El error en el logo de \textit{Chrome} es aún mayor, debido a ser  
  circular. Dado que el algoritmo codifica en ventanas cuadradas, se puede esperar aún más distorsiones 
@@ -370,9 +372,6 @@ valores menores de $\alpha$, tanto el error como la densidad de ceros disminuye.
 
 
 
-\begin{center}
-Tabla 2: Uso de distinto $\alpha$ para la codificación de la imagen \textit{chrome}.
-\end{center}
 
 \subsection{Dimensiones indivisibles por 8}
 
@@ -493,7 +492,7 @@ Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocur
 	\end{center}
 \end{figure}
 \begin{center}
-\par Figura 10: \textit{Sample 3}, ampliada factor 3.
+\par Figura 10: \textit{Sample 2}, ampliada factor 3.
 \end{center}
 
 \begin{figure}[H]
@@ -502,7 +501,7 @@ Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocur
 	\end{center}
 \end{figure}
 \begin{center}
-\par Figura 11: \textit{Sample 3} tras la codificación, ampliada factor 3. Se pueden observarlos bloques.
+\par Figura 11: \textit{Sample 2} tras la codificación, ampliada factor 3. Se pueden observar los bloques.
 \end{center}
 
 \section*{Anexo B: Variación del factor $alpha$.}
@@ -513,7 +512,8 @@ Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocur
 	\end{center}
 \end{figure}
 \begin{center}
-\par Figura 3: Codificación de varias imágenes del logo de \textit{Chrome} utilizando distintos valores de \textit{alpha}.
+\par Figura 3: Codificación de varias imágenes del logo de \textit{Chrome} utilizando distintos 
+valores de \textit{alpha}, variando de izquierda a derecha, arriba a abajo, (valores: $0.5,0.75,1,1.3,1.5,2,3$).
 \end{center}
 
 
