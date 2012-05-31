@@ -128,7 +128,8 @@ efectivo.
 \par El objetivo primordial del trabajo es analizar la técnica de \textit{DCT Quantization} para distintas 
 imágenes y matrices de cuantización, analizando en cada caso la tasa de compresión, el error introducido a la 
 imagen recuperada y su distorsión gráfica. La sección 2 explica en profundidad la primer etapa de la compresión. 
-La sección 3 trata sobre la segunda etapa de compresión. La sección 4 contiene los resultados.
+La sección 3 trata sobre la segunda etapa de compresión. La sección 3 explica brevemente cómo recuperar 
+la imagen. La sección 4 contiene los resultados.
 
 %----------------------------------------------------------------------
 % SECTION II: Marco Teórico
@@ -161,7 +162,6 @@ importante para el ojo humano, se puede hacer una mayor compresión de datos.
 +1.00000& +1.77200 & +0.00000  \end{pmatrix}  \begin{pmatrix}Y^{'} \\ C_B - 128\\ C_R - 128\end{pmatrix}
 \]
 
-\par El apéndice A demuestra que las transformaciones son inversas. !TODO!!
 
 \subsection{Separación en bloques}
 
@@ -216,6 +216,24 @@ valor se lo llama $DC coefficient$ dado que en circuitos el promedio de una señ
 a la frecuencia cero) es la corriente efectiva directa ($DC$). Al resto de los valores se los llama $AC$ debido 
 a que representan la componente alterna de la corriente.
 
+
+\( G = 
+\begin{pmatrix}
+
+54.245 & -117 & -7.7 & -12.81 & -0.28 & 0.06 & 0.128 & 0.91 \\
+26.113 & 6.13 & 0.73 & -0.1 & -5.13 & -0.9 & 0.1954 & 0.177 \\
+-0.48 & 1.95 & -1.55 & -2.7 & -0.38 & -0.02 & 0.97 & 0.233 \\ 
+3.969 & 2.86 & 0.37 & -0.47 & 0.385 & 0.01 & 0.027 & 0.377 \\ 
+0.19 & 0.09 & 0.40 & 0.165 & -0.36 & 0.47 & 0.3 & -0.10 \\
+-0.005 & -0.535 & -0.3 & -0.28 & 0.426 & -0.7 & 0.045 & -0.3 \\
+0.41 & 0.59 & 0.125 & -0.38 & -0.16 & -0.157 & 0.33 & 0.086 \\
+0.03 & -0.41 & -0.2 & 0.22 & 0.34 & 0.41 & 0.19 & 0.36 \\
+\end{pmatrix}\)
+\begin{center}
+Ejemplo de una matriz salida, correspondiente a la luma del primer bloque de la imagen \textit{Sample 1}. Nótese 
+que los números de mayor magnitud se encuentran en la zona superior izquierda.
+\end{center}
+
 \par También es importante destacar que los valores de los canales son llevados a un rango 
 alrededor del $0$ antes de ser transformados, en el intervalo $[-127,128]$. Esto se logra fácilmente restando 
 $127$ a todos los valores de entrada.
@@ -264,13 +282,31 @@ correspondiente de la matriz de cuantización y se redondea. Para la luma se uti
 croma $\mathbf{Q}_c(k,l)$.
 \par Nótese que existen varios valores de entrada que son transformados a la misma salida, es decir la relación 
 no es inyectiva. Debido a esto, se pierde información. En particular, dado un coeficiente $k$ de la matriz 
-de cuantización, existen unos $k$ valores que producirán la misma salida. Ergo, 
+de cuantización, existe un intervalo de longitud $k$ que producirá la misma salida. Ergo, 
 valores más grandes de la matriz de cuantización implican una mayor pérdida de información. Si se observan ambas 
 matrices con detenimiento, se puede apreciar que los valores son mayores en la zona inferior derecha. Esto 
 implica que la mayor pérdida de información ocurre en las frecuencias altas de los canales, que es lo que se 
 buscaba en un principio.  Asimismo, debido a que la transformada coseno discerta concentra la señal en la zona 
 superior izquierda, y los coeficientes de cuantización son mayores en la zona inferior derecha, el resultado de la 
 cuantización tendrá una densidad de ceros considerable en esta última zona.
+
+\( By = 
+\begin{pmatrix}
+3 & -11 & -1 & -1 & 0 & 0 & 0 & 0 \\
+2 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+\end{pmatrix}\)
+
+\begin{center} Ejemplo de una matriz tras ser cuantificada, correspondiente al primer bloque de la luma de \textit{Sample 1}.
+\end{center}
+
+\par Se decidió además experimentar con distintas matrices de cuantificación. Para ello se multiplicó a las 
+matrices estándares por un cierto valor $\alpha$.
 
 \section{Codificación entrópica}
 
@@ -292,15 +328,16 @@ archivo. Sin embargo, se pueden modificar algunos datos para reducir aún más l
 \par Antes de ejecutar el algoritmo de codificación, se pueden reordenar los valores de la matriz cuantificada, 
 ordenando los valores según qué frecuencia representan. 
 
-\begin{figure}[H]
-\centering
-	\includegraphics[scale=0.7]{./img/zig-zag.jpg}
+\begin{figure}
+	\includegraphics[scale=0.5]{./img/zig-zag.jpg}
 	\caption{Reordenamiento de los valores según su frecuencia}
 \label{zigzag}
 \end{figure}
 
-\par Debido a que los valores asociados a mayores frecuencias eran mayormente cero, este reordenamiento casuará 
-cadenas largas de ceros en los datos antes de codificar. Esto resulta en una codificación más compacta.
+\par Debido a que los valores asociados a mayores frecuencias son mayormente cero, este reordenamiento casuará 
+cadenas largas de ceros en los datos antes de codificar. Esto resulta en una codificación más compacta. Además, 
+por lo general se codifica un símbolo especial indicando que el resto del bloque está únicamente conformado 
+por ceros.
 
 \subsubsection{Resta del coeficiente DC}
 
@@ -337,13 +374,124 @@ que se guarda en el encabezado del archivo. Este se puede despreciar asumiendo q
 
 
 
-\section{Procedimiento}
+\section{Procedimiento de recuperación}
 
+En esencia el procedimiento de recuperación consiste en los mismos pasos ya nombrados pero aplicados 
+en orden inverso. Primero se descomprime utilizando la descodificación entrópica. Se multiplican 
+los valores de cada bloque por su valor correspondiente en la matriz de cuantificación. Se aplica la 
+antitransformada discreta del coseno a cada bloque, y luego se recupera la imagen en los canales luma y croma 
+con los bloques. Finalmente se transforman dichos canales a los canales $RGB$.
+
+\section{Resultados y conclusiones}
+
+\subsection{Tipos de imágenes}
+
+\par Como se puede observar en la Tabla 1, la codificación alcanza valores cercanos o superiores al $90\%$ de 
+ceros en la imagen. Según la estimación planteada, esto reduce la cantidad de bits por pixel 
+ a valores entre $4$ y $6$. Asimismo, se puede observar que el error es más de tres veces mayor en las imágenes de tipo 
+íconos, es decir alguna forma o figura sobre un fondo blanco, como el logo de \textit{Facebook} o \textit{Chrome}.
+ Esto se debe a que en la frontera entre dicha figura y el fondo existen cambios brucos de luminosidad, 
+ que serán suavizados en la codificación. Esto incrementa el error cuadrático medio y hace que 
+ el contorno de la figura se distorsione. El error en el logo de \textit{Chrome} es aún mayor, debido a ser  
+ circular. Dado que el algoritmo codifica en ventanas cuadradas, se puede esperar aún más distorsiones 
+ en el límite de la figura. En imágenes que representan fotografías de paisajes estos fenómenos no se 
+ encuentran habitualmente, por lo que se puede verificar que el error cuadrático medio es menor.
+
+\begin{center}
+	\begin{tabular}{|l || c | c | c | c|}
+		\hline
+		\textbf{Imagen} & \textbf{Tamaño en pixeles} & \textbf{Densidad de 0} & \textbf{Bits por pixel estimados} & \textbf{Error cuadrático medio}\\
+		\hline
+		\hline
+		Lenna & 512x512 & 0.943 & 4.37 & 8\\
+		Sample1 & 74x56 & 0.91 & 5.4 & 11\\
+		Sample2 & 73x48 & 0.924 & 4.824 & 10\\
+		chrome & 48x48 & 0.95 & 0.81 & 86\\
+		facebook & 42x43 & 0.91 & 5.16 & 30\\
+		\hline
+	\end{tabular}
+\end{center}
+\begin{center}
+Tabla 1: Compresión y errores de imágenes tras aplicar la codificación, usando $\alpha=1$.
+\end{center}
+
+\subsection{Variaciones en la cuantización}
+
+\par En la tabla 2 se puede verificar que si se utilizan matrices de cuantificación con valores mayores 
+( es decir mayor $\alpha$) el error sube, pero la densidad de ceros lo hace también. Por otro lado para 
+valores menores de $\alpha$, tanto el error como la densidad de ceros disminuye.
+
+\begin{center}
+	\begin{tabular}{|l || c | c | c | c|}
+		\hline
+		\textbf{$\alpha$} & \textbf{Densidad de 0} & \textbf{Bits por pixel estimados} & \textbf{Error cuadrático medio}\\
+		\hline
+		\hline
+		0.5 & 0.74 & 9.24 & 35\\
+		0.75 & 0.78 & 8.28 & 64\\
+		1 & 0.81 & 7.56 & 86\\
+		1.3 & 0.835 & 6.96 & 133\\
+		1.5 & 0.845 & 6.72 & 139\\
+		2 & 0.87 & 6.12 & 181\\
+		3 & 0.894 & 5.27 & 241\\
+		\hline
+	\end{tabular}
+\end{center}
+\begin{center}
+Tabla 2: Compresión y errores de imágenes tras aplicar la codificación, usando $\alpha=1$.
+\end{center}
+
+\begin{center}
+Tabla 2: Uso de distinto $\alpha$ para la codificación de la imagen \textit{chrome}.
+\end{center}
+
+\subsection{Dimensiones indivisibles por 8}
+
+Para llevar una imagen a bloques cuyas dimensiones no son múltiplos de 8, se deben agregar pixeles. La 
+tabla 3 muestra la diferencia entre el rellenado de dichos pixeles con ceros y el rellenado usando 
+el pixel del borde más cercano.
+
+	\begin{tabular}{|l || c | c | c | c|}
+		\hline
+		\textbf{Nombre} & \textbf{Rellenado} & \textbf{Error cuadrático medio}\\
+		\hline
+		\hline
+		dog & Bordes &  23\\
+		dog & Ceros & 26\\
+		facebook & Bordes  17\\
+		facebook & Ceros & 30\\
+		\hline
+	\end{tabular}
+\end{center}
+\begin{center}
+Tabla 3: Comparación para distintos rellenados de imágenes, $\alpha=1$.
+\end{center}
+
+\par Se puede verificar que si se rellena con ceros, el borde de la imagen presenta distorsiones de los 
+colores verdes y magenta (ver imágenes 1 y 2).
 
 \begin{figure}[H]
 \centering
-	\includegraphics[scale=0.7]{./images/lenna/lenna128matlab.png}
-	\caption{Imagen de Lenna de 128x128 pixeles}
+	\includegraphics[scale=5]{./img/facebookout.bmp}
+	\caption{Imagen 1. Rellenado usando pixel del borde. Imagen ampliada, factor 5. Factor $\alpha=1$.}
+\label{lenna128}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+	\includegraphics[scale=5]{./img/facebookout0.bmp}
+	\caption{Imagen 2. Rellenado usando ceros. Imagen ampliada, factor 5. Factor $\alpha=1$.}
+\label{lenna128}
+\end{figure}
+
+\subsection{Bloques en ampliaciones de imagenes}
+
+Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocurrida (ver imagen 3 o Anexo A).
+
+\begin{figure}[H]
+\centering
+	\includegraphics[scale=5]{./img/chrome3out.png}
+	\caption{Imagen 3. Logo de \textit{chrome} ampliado con un factor de 5. Factor $\alpha=3$ para hacer más vistosos los bloques.}
 \label{lenna128}
 \end{figure}
 
@@ -397,39 +545,126 @@ Tabla 1: Tamaño de las imágenes de muestra
 % The ieeecls.bbl file was manually included here to make the distribution
 % of this paper easier. You need not do it for your own papers.
 
-\clearpage
 
 \begin{thebibliography}{1}
 
-\bibitem{lamport1}
-Fierens, P. (2011),
-\newblock {\em Análisis Armónico: Guia 02},
-\newblock Buenos Aires: Instituto Tecnológico de Buenos Aires.
 
 \bibitem{lamport1}
-Khayam, S. (2003),
-\newblock {\em  The Discrete Cosine Transform: {Theory and Application}},
-\newblock Michigan State University (MI).
+\newblock {\em  JPEG - http://en.wikipedia.org/wiki/Jpg},
 
 \bibitem{lamport1}
-Hsu, H. (1987),
-\newblock {\em  Análisis de Fourier},
-\newblock Addison - Wesley Iberoamericana (DE).
+\newblock {\em  Codificación aritmética - http://en.wikipedia.org/wiki/Arithmetic_coding},
 
 \bibitem{lamport1}
-\newblock {\em  JPGE - http://en.wikipedia.org/wiki/Jpg},
-\newblock Wikipedia.
+\newblock {\em  Codificación Huffman - http://en.wikipedia.org/wiki/Huffman_coding},
 
 \bibitem{lamport1}
-\newblock {\em  http://www.cmlab.csie.ntu.edu.tw/cml/dsp/training/coding/jpeg/jpeg/encoder.htm},
-\newblock Wikipedia.
+\newblock {\em  Codificación Huffman - http://en.wikipedia.org/wiki/DC_Bias},
 
+\bibitem{lamport1}
+\newblock {\em  JPEG - http://www.cmlab.csie.ntu.edu.tw/cml/dsp/training/coding/jpeg/jpeg/encoder.htm},
 
+\clearpage
+
+\onecolumn
+
+\section*{Anexo A: Imagenes y sus codificaciones. Factor $\alpha = 1$ en todos los casos.}
+
+\begin{figure}[H]
+\centering
+	\includegraphics[scale=0.7]{./img/lenacolor.tiff}
+	\caption{Imagen de Lenna de 512x512 pixeles}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+	\includegraphics[scale=0.7]{./img/lenaout.tiff}
+	\caption{Imagen de Lenna de 512x512 pixeles tras codificar}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+	\includegraphics[scale=0.7]{./img/lenadif.tiff}
+	\caption{Imagen de Lenna de 512x512 pixeles}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+	\includegraphics[scale=5]{./img/sample_1_in.jpg}
+	\caption{\textit{Sample 1}, ampliada factor 5.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+	\includegraphics[scale=5]{./img/sample_1_alpha_1_out.jpg}
+	\caption{\textit{Sample 1} tras la codificación, ampliada factor 5.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+	\includegraphics[scale=5]{./img/sample_3_in.jpg}
+	\caption{\textit{Sample 3}, ampliada factor 5.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+	\includegraphics[scale=5]{./img/sample_3_alpha_1_out.jpg}
+	\caption{\textit{Sample 3} tras la codificación, ampliada factor 5. Se pueden observar ciertos bloques en el centro de la imagen.}
+\end{figure}
+
+\section*{Anexo B: Variación del factor $alpha$.}
+
+\begin{figure}[H]
+\centering
+	\includegraphics[scale=3]{./img/chrome.bmp}
+	\caption{Codificación de varias imágenes del logo de \textit{Chrome} utilizando distintos valores de \textit{alpha}}
+\end{figure}
 
 
 \end{thebibliography}
 
 %----------------------------------------------------------------------
 
+\section*{Anexo C: Código Octave}
+
+\subsection{Pasaje de espacio de color de una imagen de RGB a $Y'C_bC_r$}
+
+\VerbatimInput{../src/rgb_to_ybr.m}
+
+\subsection{Pasaje de espacio $Y'C_bC_r$ a RGB. }
+
+\VerbatimInput{../src/ybr_to_rgb.m}
+
+\subsection{Pasaje de imagen a bloques $8x8$. }
+
+\VerbatimInput{../src/img_to_blocks.m}
+
+\subsection{Pasaje bloques a imagen. }
+
+\VerbatimInput{../src/blocks_to_img.m}
+
+\subsection{Transformada coseno discreta de bloque. }
+
+\VerbatimInput{../src/disc_cos_transf.m}
+
+\subsection{Antitransformada coseno discreta de bloque. }
+
+\VerbatimInput{../src/disc_cos_antitransf.m}
+
+\subsection{Cálculo del error cuadrático medio de una diferencia de imágenes. }
+
+\VerbatimInput{../src/calc_error.m}
+
+\subsection{Cálculo de la densidad de ceros. }
+
+\VerbatimInput{../src/calc_zeros.m}
+
+\subsection{Antitransformada coseno discreta de bloque. }
+
+\VerbatimInput{../src/disc_cos_antitransf.m}
+
+\subsection{Codificación y decodificación de una imagen.}
+
+\VerbatimInput{../src/encode_and_decode.m}
 
 \end{document}

@@ -17,14 +17,15 @@ function ret = img_to_blocks(M,n)
 				if( width >= j && height >= i)
 					ret(block, k, i2, j2) = M(i,j,k);
 				else
-					if( j > width)
-						ret(block, k, i2, j2) = M(i,width,k);
-					endif
-					if( i > height)
-						ret(block, k, i2, j2) = M(height,j,k);
-					endif
 					if( j > height && i > height)
 						ret(block, k, i2, j2) = M(height,width,k);
+					else
+						if( j > width)
+							ret(block, k, i2, j2) = M(height,width,k);
+						endif
+						if( i > height)
+							ret(block, k, i2, j2) = M(height,j,k);
+						endif
 					endif
 				endif
 			end
