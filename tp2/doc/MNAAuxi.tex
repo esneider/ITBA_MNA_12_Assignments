@@ -331,7 +331,6 @@ ordenando los valores según qué frecuencia representan.
 \begin{figure}
 	\includegraphics[scale=0.5]{./img/zig-zag.jpg}
 	\caption{Reordenamiento de los valores según su frecuencia}
-\label{zigzag}
 \end{figure}
 
 \par Debido a que los valores asociados a mayores frecuencias son mayormente cero, este reordenamiento casuará 
@@ -386,7 +385,7 @@ con los bloques. Finalmente se transforman dichos canales a los canales $RGB$.
 
 \subsection{Tipos de imágenes}
 
-\par Como se puede observar en la Tabla 1, la codificación alcanza valores cercanos o superiores al $90\%$ de 
+\par Como se puede observar en la Tabla 1 en el anexo C, la codificación alcanza valores cercanos o superiores al $90\%$ de 
 ceros en la imagen. Según la estimación planteada, esto reduce la cantidad de bits por pixel 
  a valores entre $4$ y $6$. Asimismo, se puede observar que el error es más de tres veces mayor en las imágenes de tipo 
 íconos, es decir alguna forma o figura sobre un fondo blanco, como el logo de \textit{Facebook} o \textit{Chrome}.
@@ -397,49 +396,15 @@ ceros en la imagen. Según la estimación planteada, esto reduce la cantidad de 
  en el límite de la figura. En imágenes que representan fotografías de paisajes estos fenómenos no se 
  encuentran habitualmente, por lo que se puede verificar que el error cuadrático medio es menor.
 
-\begin{center}
-	\begin{tabular}{|l || c | c | c | c|}
-		\hline
-		\textbf{Imagen} & \textbf{Tamaño en pixeles} & \textbf{Densidad de 0} & \textbf{Bits por pixel estimados} & \textbf{Error cuadrático medio}\\
-		\hline
-		\hline
-		Lenna & 512x512 & 0.943 & 4.37 & 8\\
-		Sample1 & 74x56 & 0.91 & 5.4 & 11\\
-		Sample2 & 73x48 & 0.924 & 4.824 & 10\\
-		chrome & 48x48 & 0.95 & 0.81 & 86\\
-		facebook & 42x43 & 0.91 & 5.16 & 30\\
-		\hline
-	\end{tabular}
-\end{center}
-\begin{center}
-Tabla 1: Compresión y errores de imágenes tras aplicar la codificación, usando $\alpha=1$.
-\end{center}
+
 
 \subsection{Variaciones en la cuantización}
 
-\par En la tabla 2 se puede verificar que si se utilizan matrices de cuantificación con valores mayores 
+\par En la tabla 2 en el anexo C se puede verificar que si se utilizan matrices de cuantificación con valores mayores 
 ( es decir mayor $\alpha$) el error sube, pero la densidad de ceros lo hace también. Por otro lado para 
 valores menores de $\alpha$, tanto el error como la densidad de ceros disminuye.
 
-\begin{center}
-	\begin{tabular}{|l || c | c | c | c|}
-		\hline
-		\textbf{$\alpha$} & \textbf{Densidad de 0} & \textbf{Bits por pixel estimados} & \textbf{Error cuadrático medio}\\
-		\hline
-		\hline
-		0.5 & 0.74 & 9.24 & 35\\
-		0.75 & 0.78 & 8.28 & 64\\
-		1 & 0.81 & 7.56 & 86\\
-		1.3 & 0.835 & 6.96 & 133\\
-		1.5 & 0.845 & 6.72 & 139\\
-		2 & 0.87 & 6.12 & 181\\
-		3 & 0.894 & 5.27 & 241\\
-		\hline
-	\end{tabular}
-\end{center}
-\begin{center}
-Tabla 2: Compresión y errores de imágenes tras aplicar la codificación, usando $\alpha=1$.
-\end{center}
+
 
 \begin{center}
 Tabla 2: Uso de distinto $\alpha$ para la codificación de la imagen \textit{chrome}.
@@ -448,24 +413,9 @@ Tabla 2: Uso de distinto $\alpha$ para la codificación de la imagen \textit{chr
 \subsection{Dimensiones indivisibles por 8}
 
 Para llevar una imagen a bloques cuyas dimensiones no son múltiplos de 8, se deben agregar pixeles. La 
-tabla 3 muestra la diferencia entre el rellenado de dichos pixeles con ceros y el rellenado usando 
+tabla 3 en el anexo C muestra la diferencia entre el rellenado de dichos pixeles con ceros y el rellenado usando 
 el pixel del borde más cercano.
-\begin{center}
-	\begin{tabular}{|l || c | c | c | c|}
-		\hline
-		\textbf{Nombre} & \textbf{Rellenado} & \textbf{Error cuadrático medio}\\
-		\hline
-		\hline
-		dog & Bordes &  23\\
-		dog & Ceros & 26\\
-		facebook & Bordes & 17\\
-		facebook & Ceros & 30\\
-		\hline
-	\end{tabular}
-\end{center}
-\begin{center}
-Tabla 3: Comparación para distintos rellenados de imágenes, $\alpha=1$.
-\end{center}
+
 
 \par Se puede verificar que si se rellena con ceros, el borde de la imagen presenta distorsiones de los 
 colores verdes y magenta (ver imágenes 1 y 2).
@@ -536,8 +486,6 @@ Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocur
 \bibitem{lamport1}
 \newblock {\em{  JPEG - http://en.wikipedia.org/wiki/Jpg}}
 \bibitem{lamport1}
-\newblock {\em{ Codificación aritmética - http://en.wikipedia.org/wiki/Arithmetic_coding}}
-\bibitem{lamport1}
 \newblock {\em{ Codificación Huffman - http://en.wikipedia.org/wiki/Huffman_coding}}
 \bibitem{lamport1}
 \newblock {\em{ Codificación Huffman - http://en.wikipedia.org/wiki/DC_Bias}}
@@ -604,7 +552,64 @@ Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocur
 
 %----------------------------------------------------------------------
 
-\section*{Anexo C: Código Octave}
+\section*{Anexo C: Tablas de resultados}
+
+\begin{center}
+	\begin{tabular}{|l || c | c | c | c|}
+		\hline
+		\textbf{Imagen} & \textbf{Tamaño en pixeles} & \textbf{Densidad de 0} & \textbf{Bits por pixel estimados} & \textbf{Error cuadrático medio}\\
+		\hline
+		\hline
+		Lenna & 512x512 & 0.943 & 4.37 & 8\\
+		Sample1 & 74x56 & 0.91 & 5.4 & 11\\
+		Sample2 & 73x48 & 0.924 & 4.824 & 10\\
+		chrome & 48x48 & 0.95 & 0.81 & 86\\
+		facebook & 42x43 & 0.91 & 5.16 & 30\\
+		\hline
+	\end{tabular}
+\end{center}
+\begin{center}
+Tabla 1: Compresión y errores de imágenes tras aplicar la codificación, usando $\alpha=1$.
+\end{center}
+
+\begin{center}
+	\begin{tabular}{|l || c | c | c | c|}
+		\hline
+		\textbf{$\alpha$} & \textbf{Densidad de 0} & \textbf{Bits por pixel estimados} & \textbf{Error cuadrático medio}\\
+		\hline
+		\hline
+		0.5 & 0.74 & 9.24 & 35\\
+		0.75 & 0.78 & 8.28 & 64\\
+		1 & 0.81 & 7.56 & 86\\
+		1.3 & 0.835 & 6.96 & 133\\
+		1.5 & 0.845 & 6.72 & 139\\
+		2 & 0.87 & 6.12 & 181\\
+		3 & 0.894 & 5.27 & 241\\
+		\hline
+	\end{tabular}
+\end{center}
+\begin{center}
+Tabla 2: Compresión y errores de imágenes tras aplicar la codificación, usando $\alpha=1$.
+\end{center}
+
+\begin{center}
+	\begin{tabular}{|l || c | c | c | c|}
+		\hline
+		\textbf{Nombre} & \textbf{Rellenado} & \textbf{Error cuadrático medio}\\
+		\hline
+		\hline
+		dog & Bordes &  23\\
+		dog & Ceros & 26\\
+		facebook & Bordes & 17\\
+		facebook & Ceros & 30\\
+		\hline
+	\end{tabular}
+\end{center}
+\begin{center}
+Tabla 3: Comparación para distintos rellenados de imágenes, $\alpha=1$.
+\end{center}
+
+\section*{Anexo D: Código Octave}
 
 \subsection{Pasaje de espacio de color de una imagen de RGB a $Y'C_bC_r$}
 
