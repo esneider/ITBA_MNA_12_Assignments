@@ -1,31 +1,27 @@
-
 \documentclass[%
-	%draft,
-	%submission,
-	%compressed,
-	final,
-	%
-	%technote,
-	%internal,
-	%submitted,
-	%inpress,
-	reprint,
-	%
-	%titlepage,
-	notitlepage,
-	%anonymous,
-	narroweqnarray,
-	inline,
-	twoside,
-	invited
-	]{ieee}
-
+%draft,
+%submission,
+%compressed,
+final,
+%
+%technote,
+%internal,
+%submitted,
+%inpress,
+reprint,
+%
+%titlepage,
+notitlepage,
+%anonymous,
+narroweqnarray,
+inline,
+twoside,
+invited
+]{ieee}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
-\usepackage[center]{caption}
 \usepackage{graphicx}
 \usepackage{verbatim}
-\usepackage{color}
 \usepackage{moreverb}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -34,27 +30,21 @@
 \usepackage{float}
 \usepackage{fancyvrb}
 \usepackage{subfigure}
-\usepackage{mathtools}
-
 \newcommand{\latexiie}{\LaTeX2{\Large$_\varepsilon$}}
-
-%\usepackage{ieeetsp}	% if you want the "trans. sig. pro." style
-%\usepackage{ieeetc}	% if you want the "trans. comp." style
-%\usepackage{ieeeimtc}	% if you want the IMTC conference style
-
+%\usepackage{ieeetsp} % if you want the "trans. sig. pro." style
+%\usepackage{ieeetc} % if you want the "trans. comp." style
+%\usepackage{ieeeimtc} % if you want the IMTC conference style
 % Use the `endfloat' package to move figures and tables to the end
 % of the paper. Useful for `submission' mode.
 %\usepackage {endfloat}
-
 % Use the `times' package to use Helvetica and Times-Roman fonts
-% instead of the standard Computer Modern fonts. Useful for the 
+% instead of the standard Computer Modern fonts. Useful for the
 % IEEE Computer Society transactions.
 %\usepackage{times}
-% (Note: If you have the commercial package `mathtime,' (from 
-% y&y (http://www.yandy.com), it is much better, but the `times' 
+% (Note: If you have the commercial package `mathtime,' (from
+% y&y (http://www.yandy.com), it is much better, but the `times'
 % package works too). So, if you have it...
 %\usepackage {mathtime}
-
 % for any plug-in code... insert it here. For example, the CDC style...
 %\usepackage{ieeecdc}
 
@@ -63,8 +53,8 @@
 %----------------------------------------------------------------------
 % Title Information, Abstract and Keywords
 %----------------------------------------------------------------------
-\title[Compresión de Imágenes]{%
-Compresión de imágenes mediante \\DCT Quantization}
+\title[JPEG: Compresión de Imágenes]{%
+JPEG y la compresión de imágenes\\ mediante DCT Quantization}
 
 % format author this way for journal articles.
 % MAKE SURE THERE ARE NO SPACES BEFORE A \member OR \authorinfo
@@ -79,7 +69,7 @@ Compresión de imágenes mediante \\DCT Quantization}
 
 \journal{Cátedra\ de\ Met.\ Num.\ Avanzados,\ ITBA\ }
 \titletext{- 31, MAYO\ 2012}
-\ieeecopyright{0018--9456/97\$10.00 \copyright\ 2011 ITBA}
+\ieeecopyright{\copyright\ 2011 ITBA}
 \lognumber{}
 \pubitemident{}
 \loginfo{31 de Mayo, 2012.}
@@ -300,9 +290,10 @@ ordenando los valores según qué frecuencia representan.
 
 \begin{figure}[H]
 	\includegraphics[scale=0.5]{./img/zig-zag.jpg}
-	\caption{Reordenamiento de los valores según su frecuencia}
-	\label{}
 \end{figure}
+\begin{center}
+\par Figura 1: Reordenamiento de los valores según su frecuencia
+\end{center}
 
 \par Debido a que los valores asociados a mayores frecuencias son mayormente cero, este reordenamiento casuará 
 cadenas largas de ceros en los datos antes de codificar. Esto resulta en una codificación más compacta. Además, 
@@ -392,30 +383,29 @@ el pixel del borde más cercano.
 colores verdes y magenta (ver figuras 2 y 3).
 
 \begin{figure}[H]
-\centering
 	\includegraphics[scale=3]{./img/facebookout.png}
-	\caption{Rellenado usando pixel del borde. Imagen ampliada, factor 3. Factor $\alpha=1$.}
-	\label{}
 \end{figure}
+\begin{center}
+\par Figura 2: Rellenado usando pixel del borde. Imagen ampliada, factor 3. Factor $\alpha=1$.
+\end{center}
 
 \begin{figure}[H]
-\centering
 	\includegraphics[scale=3]{./img/facebookout0.png}
-	\caption{Rellenado usando ceros. Imagen ampliada, factor 3. Factor $\alpha=1$.}
-	\label{}
 \end{figure}
+\begin{center}
+\par Figura 3: Rellenado usando ceros. Imagen ampliada, factor 3. Factor $\alpha=1$.
+\end{center}
 
 \subsection{Bloques en ampliaciones de imagenes}
 
 Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocurrida (ver figura 4 o Anexo A).
 
 \begin{figure}[H]
-\centering
 	\includegraphics[scale=3]{./img/chrome3out.png}
-	\caption{Logo de \textit{chrome} ampliado con un factor de 3. Factor $\alpha=3$ para hacer más vistosos los bloques.}
-	\label{}
 \end{figure}
-
+\begin{center}
+\par Figura 4: Logo de \textit{chrome} ampliado con un factor de 3. Factor $\alpha=3$ para hacer más vistosos los bloques.
+\end{center}
 
 
 \vspace{0.4cm}
@@ -431,70 +421,72 @@ Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocur
 \bibitem{lamport1}
 \newblock {\em{ Coeficiente DC - http://en.wikipedia.org/wiki/DC\_Bias}}
 \bibitem{lamport1}
-\newblock {\em{ JPEG - http://www.cmlab.csie.ntu.edu.tw/cml/dsp/training/coding/jpeg/jpeg/encoder.htm}}
-\clearpage
+\newblock {\em{http://www.cmlab.csie.ntu.edu.tw/cml/dsp/training/coding/jpeg/jpeg/encoder.htm}}
+
 
 \onecolumn
+
+\clearpage
 
 \section*{Anexo A: Imagenes y sus codificaciones. Factor $\alpha = 1$ en todos los casos.}
 
 \begin{figure}[H]
-\centering
 	\includegraphics[scale=0.7]{./img/lenacolor.png}
-	\caption{Imagen de Lenna de 512x512 pixeles}
-	\label{}
 \end{figure}
+\begin{center}
+\par Figura 5: Imagen de Lenna de 512x512 pixeles.
+\end{center}
 
 \begin{figure}[H]
-\centering
 	\includegraphics[scale=0.7]{./img/lenaout.png}
-	\caption{Imagen de Lenna de 512x512 pixeles tras codificar}
-	\label{}
 \end{figure}
+\begin{center}
+\par Figura 6: Imagen de Lenna de 512x512 pixeles tras codificar.
+\end{center}
 
 \begin{figure}[H]
-\centering
 	\includegraphics[scale=0.7]{./img/lenadif.png}
-	\caption{Imagen de Lenna de 512x512 pixeles}
-	\label{}
 \end{figure}
+\begin{center}
+\par Figura 7: Diferencia entre las figuras 5 y 6, imperceptible.
+\end{center}
 
 \begin{figure}[H]
-\centering
 	\includegraphics[scale=3]{./img/sample_1_in.jpg}
-	\caption{\textit{Sample 1}, ampliada factor 3.}
-	\label{}
 \end{figure}
+\begin{center}
+\par Figura 8: \textit{Sample 1}, ampliada factor 3.
+\end{center}
 
 \begin{figure}[H]
-\centering
 	\includegraphics[scale=3]{./img/sample_1_alpha_1_out.jpg}
-	\caption{\textit{Sample 1} tras la codificación, ampliada factor 3.}
-	\label{}
 \end{figure}
+\begin{center}
+\par Figura 9: \textit{Sample 1} tras la codificación, ampliada factor 3.
+\end{center}
 
 \begin{figure}[H]
-\centering
 	\includegraphics[scale=3]{./img/sample_3_in.jpg}
-	\caption{\textit{Sample 3}, ampliada factor 3.}
-	\label{}
 \end{figure}
+\begin{center}
+\par Figura 10: \textit{Sample 3}, ampliada factor 3.
+\end{center}
 
 \begin{figure}[H]
-\centering
 	\includegraphics[scale=3]{./img/sample_3_alpha_1_out.jpg}
-	\caption{\textit{Sample 3} tras la codificación, ampliada factor 3. Se pueden observarlos bloques.}
-	\label{}
 \end{figure}
+\begin{center}
+\par Figura 11: \textit{Sample 3} tras la codificación, ampliada factor 3. Se pueden observarlos bloques.
+\end{center}
 
 \section*{Anexo B: Variación del factor $alpha$.}
 
 \begin{figure}[H]
-\centering
 	\includegraphics[scale=2.3]{./img/chromes.png}
-	\caption{Codificación de varias imágenes del logo de \textit{Chrome} utilizando distintos valores de \textit{alpha}}
-	\label{}
 \end{figure}
+\begin{center}
+\par Figura 3: Codificación de varias imágenes del logo de \textit{Chrome} utilizando distintos valores de \textit{alpha}.
+\end{center}
 
 
 \end{thebibliography}
@@ -626,10 +618,6 @@ que los números de mayor magnitud se encuentran en la zona superior izquierda.
 \subsection{Cálculo de la densidad de ceros. }
 
 \VerbatimInput{../src/calc_zeros.m}
-
-\subsection{Antitransformada coseno discreta de bloque. }
-
-\VerbatimInput{../src/disc_cos_antitransf.m}
 
 \subsection{Codificación y decodificación de una imagen.}
 
