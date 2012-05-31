@@ -214,25 +214,8 @@ es decir en la zona superior izquierda. En particular, comúnmente el mayor valo
 Este valor representa la frecuencia con valor 0, y por lo tanto es un promedio de los 64 valores de entrada. A este 
 valor se lo llama $DC coefficient$ dado que en circuitos el promedio de una señal ( es decir el valor asociado 
 a la frecuencia cero) es la corriente efectiva directa ($DC$). Al resto de los valores se los llama $AC$ debido 
-a que representan la componente alterna de la corriente.
+a que representan la componente alterna de la corriente (referirse al anexo D para ver ejemplos).
 
-
-\( G = 
-\begin{pmatrix}
-
-54.245 & -117 & -7.7 & -12.81 & -0.28 & 0.06 & 0.128 & 0.91 \\
-26.113 & 6.13 & 0.73 & -0.1 & -5.13 & -0.9 & 0.1954 & 0.177 \\
--0.48 & 1.95 & -1.55 & -2.7 & -0.38 & -0.02 & 0.97 & 0.233 \\ 
-3.969 & 2.86 & 0.37 & -0.47 & 0.385 & 0.01 & 0.027 & 0.377 \\ 
-0.19 & 0.09 & 0.40 & 0.165 & -0.36 & 0.47 & 0.3 & -0.10 \\
--0.005 & -0.535 & -0.3 & -0.28 & 0.426 & -0.7 & 0.045 & -0.3 \\
-0.41 & 0.59 & 0.125 & -0.38 & -0.16 & -0.157 & 0.33 & 0.086 \\
-0.03 & -0.41 & -0.2 & 0.22 & 0.34 & 0.41 & 0.19 & 0.36 \\
-\end{pmatrix}\)
-\begin{center}
-Ejemplo de una matriz salida, correspondiente a la luma del primer bloque de la imagen \textit{Sample 1}. Nótese 
-que los números de mayor magnitud se encuentran en la zona superior izquierda.
-\end{center}
 
 \par También es importante destacar que los valores de los canales son llevados a un rango 
 alrededor del $0$ antes de ser transformados, en el intervalo $[-127,128]$. Esto se logra fácilmente restando 
@@ -288,22 +271,9 @@ matrices con detenimiento, se puede apreciar que los valores son mayores en la z
 implica que la mayor pérdida de información ocurre en las frecuencias altas de los canales, que es lo que se 
 buscaba en un principio.  Asimismo, debido a que la transformada coseno discerta concentra la señal en la zona 
 superior izquierda, y los coeficientes de cuantización son mayores en la zona inferior derecha, el resultado de la 
-cuantización tendrá una densidad de ceros considerable en esta última zona.
+cuantización tendrá una densidad de ceros considerable en esta última zona (referirse al anexo D para ver ejemplos).
 
-\( By = 
-\begin{pmatrix}
-3 & -11 & -1 & -1 & 0 & 0 & 0 & 0 \\
-2 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\ 
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
-\end{pmatrix}\)
 
-\begin{center} Ejemplo de una matriz tras ser cuantificada, correspondiente al primer bloque de la luma de \textit{Sample 1}.
-\end{center}
 
 \par Se decidió además experimentar con distintas matrices de cuantificación. Para ello se multiplicó a las 
 matrices estándares por un cierto valor $\alpha$.
@@ -331,6 +301,7 @@ ordenando los valores según qué frecuencia representan.
 \begin{figure}[H]
 	\includegraphics[scale=0.5]{./img/zig-zag.jpg}
 	\caption{Reordenamiento de los valores según su frecuencia}
+	\label{}
 \end{figure}
 
 \par Debido a que los valores asociados a mayores frecuencias son mayormente cero, este reordenamiento casuará 
@@ -424,12 +395,14 @@ colores verdes y magenta (ver figuras 2 y 3).
 \centering
 	\includegraphics[scale=3]{./img/facebookout.png}
 	\caption{Rellenado usando pixel del borde. Imagen ampliada, factor 3. Factor $\alpha=1$.}
+	\label{}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 	\includegraphics[scale=3]{./img/facebookout0.png}
 	\caption{Rellenado usando ceros. Imagen ampliada, factor 3. Factor $\alpha=1$.}
+	\label{}
 \end{figure}
 
 \subsection{Bloques en ampliaciones de imagenes}
@@ -440,6 +413,7 @@ Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocur
 \centering
 	\includegraphics[scale=3]{./img/chrome3out.png}
 	\caption{Logo de \textit{chrome} ampliado con un factor de 3. Factor $\alpha=3$ para hacer más vistosos los bloques.}
+	\label{}
 \end{figure}
 
 
@@ -453,9 +427,9 @@ Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocur
 \bibitem{lamport1}
 \newblock {\em{  JPEG - http://en.wikipedia.org/wiki/Jpg}}
 \bibitem{lamport1}
-\newblock {\em{ Codificación Huffman - http://en.wikipedia.org/wiki/Huffman_coding}}
+\newblock {\em{ Codificación Huffman - http://en.wikipedia.org/wiki/Huffman\_coding}}
 \bibitem{lamport1}
-\newblock {\em{ Codificación Huffman - http://en.wikipedia.org/wiki/DC_Bias}}
+\newblock {\em{ Coeficiente DC - http://en.wikipedia.org/wiki/DC\_Bias}}
 \bibitem{lamport1}
 \newblock {\em{ JPEG - http://www.cmlab.csie.ntu.edu.tw/cml/dsp/training/coding/jpeg/jpeg/encoder.htm}}
 \clearpage
@@ -468,42 +442,49 @@ Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocur
 \centering
 	\includegraphics[scale=0.7]{./img/lenacolor.png}
 	\caption{Imagen de Lenna de 512x512 pixeles}
+	\label{}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 	\includegraphics[scale=0.7]{./img/lenaout.png}
 	\caption{Imagen de Lenna de 512x512 pixeles tras codificar}
+	\label{}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 	\includegraphics[scale=0.7]{./img/lenadif.png}
 	\caption{Imagen de Lenna de 512x512 pixeles}
+	\label{}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 	\includegraphics[scale=3]{./img/sample_1_in.jpg}
 	\caption{\textit{Sample 1}, ampliada factor 3.}
+	\label{}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 	\includegraphics[scale=3]{./img/sample_1_alpha_1_out.jpg}
 	\caption{\textit{Sample 1} tras la codificación, ampliada factor 3.}
+	\label{}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 	\includegraphics[scale=3]{./img/sample_3_in.jpg}
 	\caption{\textit{Sample 3}, ampliada factor 3.}
+	\label{}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 	\includegraphics[scale=3]{./img/sample_3_alpha_1_out.jpg}
 	\caption{\textit{Sample 3} tras la codificación, ampliada factor 3. Se pueden observarlos bloques.}
+	\label{}
 \end{figure}
 
 \section*{Anexo B: Variación del factor $alpha$.}
@@ -512,6 +493,7 @@ Si se amplía la imagen lo suficiente, se puede ver la división de bloques ocur
 \centering
 	\includegraphics[scale=2.3]{./img/chromes.png}
 	\caption{Codificación de varias imágenes del logo de \textit{Chrome} utilizando distintos valores de \textit{alpha}}
+	\label{}
 \end{figure}
 
 
@@ -576,7 +558,42 @@ Tabla 2: Compresión y errores de imágenes tras aplicar la codificación, usand
 Tabla 3: Comparación para distintos rellenados de imágenes, $\alpha=1$.
 \end{center}
 
-\section*{Anexo D: Código Octave}
+\section*{Anexo D: Matrices de ejemplo}
+
+
+\( G = 
+\begin{pmatrix}
+
+54.245 & -117 & -7.7 & -12.81 & -0.28 & 0.06 & 0.128 & 0.91 \\
+26.113 & 6.13 & 0.73 & -0.1 & -5.13 & -0.9 & 0.1954 & 0.177 \\
+-0.48 & 1.95 & -1.55 & -2.7 & -0.38 & -0.02 & 0.97 & 0.233 \\ 
+3.969 & 2.86 & 0.37 & -0.47 & 0.385 & 0.01 & 0.027 & 0.377 \\ 
+0.19 & 0.09 & 0.40 & 0.165 & -0.36 & 0.47 & 0.3 & -0.10 \\
+-0.005 & -0.535 & -0.3 & -0.28 & 0.426 & -0.7 & 0.045 & -0.3 \\
+0.41 & 0.59 & 0.125 & -0.38 & -0.16 & -0.157 & 0.33 & 0.086 \\
+0.03 & -0.41 & -0.2 & 0.22 & 0.34 & 0.41 & 0.19 & 0.36 \\
+\end{pmatrix}\)
+\begin{center}
+Ejemplo de una matriz salida, correspondiente a la luma del primer bloque de la imagen \textit{Sample 1}. Nótese 
+que los números de mayor magnitud se encuentran en la zona superior izquierda.
+\end{center}
+
+\( By = 
+\begin{pmatrix}
+3 & -11 & -1 & -1 & 0 & 0 & 0 & 0 \\
+2 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+\end{pmatrix}\)
+
+\begin{center} Ejemplo de una matriz tras ser cuantificada, correspondiente al primer bloque de la luma de \textit{Sample 1}.
+\end{center}
+
+\section*{Anexo E: Código Octave}
 
 \subsection{Pasaje de espacio de color de una imagen de RGB a $Y'C_bC_r$}
 
