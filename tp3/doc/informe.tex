@@ -54,7 +54,7 @@ invited
 % Title Information, Abstract and Keywords
 %----------------------------------------------------------------------
 \title[Deformación de un cilindro]{%
-JPEG y la compresión de imágenes\\ mediante DCT Quantization}
+Deformación de un cilindro}
 
 % format author this way for journal articles.
 % MAKE SURE THERE ARE NO SPACES BEFORE A \member OR \authorinfo
@@ -121,16 +121,13 @@ Sean $\Delta r$ y $\Delta t$ los cambios en el radio y temperatura respectivamen
 de $u(r,t)$ utilizando ecuaciones en diferencias. La ecuación en diferencias 
 está dada por:
 
-\[ \frac{v(n+1,t) - 2v(n,t) + v(n-1,t)}{\Delta r^2} + \frac{v(n+1,t) - v(n,t)}{r\Delta r} = \frac{1}{4K}\frac{v(n,t+1) - v(n,t)}{\Delta t} \]
-
-Sea $p=\frac{\Delta t4K}{\Delta r^2}$ y $q=\frac{\Delta r}{r}$.
-\[ p\left( v(n+1,t) - 2v(n,t) + v(n-1,t) + q\left( v(n+1,t) - v(n,t) \right) + v(n,t) = v(n, t+1) \]
-
-Lo cual se reduce a:
-
 \begin{equation}\label{difs}
-p(1+q)v(n+1,t) + (1-p(2+q))v(n,t) + p(n-1,t) = v(n,t+1)
+p(1+q)v(n+1,t) + (1-p(2+q))v(n,t) + pv(n-1,t) = v(n,t+1)
 \end{equation}
+
+Con $p=\frac{\Delta t4K}{\Delta r^2}$ y $q=\frac{\Delta r}{r}$. \\
+
+
 
 Las ecuaciones de contorno están dadas por:
 
@@ -174,7 +171,7 @@ Donde $\overline{v_{k}}$ es un vector columna con los valores aproximados por $v
 para cada valor de $r$ en la grilla. Por otro lado, $tridiag(p,1-p(2+q),p(1+q))$ es una matriz tridiagonal 
 con $1-p(2+q)$ en la diagonal, $p$ abajo de la diagonal y $p(1+q)$ arriba de la diagonal. Además: 
 
-\begin{equation}\eqref{mat}
+\begin{equation}\label{mat}
 \overline{v_{k}} = tridiag(p,1-p(2+q),p(1+q))^k\overline{v_{0}}
 \end{equation}
 
@@ -228,13 +225,12 @@ sea menor a 1. Utilizando que $e^{i\omega} = cos(\omega) + i sen(\omega)$:
 
 El módulo de 
 un complejo equivale a su parte real al cuadrado más su parte imaginaria al cuadrado, por lo que se deduce:
-\begin{equation}{vn}
+\begin{equation}\label{vn}
 1 \geq  (cos(\omega) (2p+pq) + 1 - p(2+q))^2 + (pqsen(\omega))^2
 \end{equation}
-Si se deriva la parte derecha de la inecuación y se iguala a cero para hallar su máximo se deduce:
-\begin{equation}
-2(4p^2+4p^2q+p^2q^2) cos(\omega)sen(\omega) - 2sen(\omega)(2p+pq)(1-p(2+q))+2p^2q^2cos(\omega)sen(\omega) = 0
-\end{equation}
+Se derivó la parte derecha de la inecuación y se igualó a cero para hallar su máximo. La expresión 
+puede ser hallada en el Anexo B. Se anula dicha expresión en $\omega =0$.
+
 Es fácil ver que si $\omega = 0$ la derivada es igual a cero. Sustituyendo $\omega$ por 0 en \eqref{vn}, se llega a:
 \[
 1 \geq  (2p+pq) + 1 - p(2+q) = 1
@@ -451,6 +447,29 @@ utilizando ecuaciones en diferencias.
 
 \onecolumn
 
-\section*{Anexo A: Código Octave}
+\section*{Anexo A: Deducción ecuación en diferencias}
+
+\begin{equation}
+\frac{\partial^2 u}{\partial r^2}+\frac{1}{r}\frac{\partial u}{\partial r}=\frac{1}{4K}\frac{\partial u}{\partial t}
+\end{equation}
+
+\[ \frac{v(n+1,t) - 2v(n,t) + v(n-1,t)}{\Delta r^2} + \frac{v(n+1,t) - v(n,t)}{r\Delta r} = \frac{1}{4K}\frac{v(n,t+1) - v(n,t)}{\Delta t} \]
+
+Sea $p=\frac{\Delta t4K}{\Delta r^2}$ y $q=\frac{\Delta r}{r}$.
+\[ p\left( v(n+1,t) - 2v(n,t) + v(n-1,t) + q\left( v(n+1,t) - v(n,t) \right) + v(n,t) = v(n, t+1) \]
+
+Lo cual se reduce a:
+
+\begin{equation}\label{difs}
+p(1+q)v(n+1,t) + (1-p(2+q))v(n,t) + pv(n-1,t) = v(n,t+1)
+\end{equation}
+
+\section*{Anexo B: Derivada}
+
+\[
+2(4p^2+4p^2q+p^2q^2) cos(\omega)sen(\omega) - 2sen(\omega)(2p+pq)(1-p(2+q))+2p^2q^2cos(\omega)sen(\omega) = 0
+\]
+
+\section*{Anexo C: Código Octave}
 
 \VerbatimInput{../src/main.m}
