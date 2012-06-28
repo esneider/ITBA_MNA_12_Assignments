@@ -1,4 +1,4 @@
-\documentclass[%
+Ôªø\documentclass[%
 %draft,
 %submission,
 %compressed,
@@ -53,21 +53,21 @@ invited
 %----------------------------------------------------------------------
 % Title Information, Abstract and Keywords
 %----------------------------------------------------------------------
-\title[JPEG: CompresiÛn de Im·genes]{%
-JPEG y la compresiÛn de im·genes\\ mediante DCT Quantization}
+\title[Deformaci√≥n de un cilindro]{%
+JPEG y la compresi√≥n de im√°genes\\ mediante DCT Quantization}
 
 % format author this way for journal articles.
 % MAKE SURE THERE ARE NO SPACES BEFORE A \member OR \authorinfo
 % COMMAND (this also means `don't break the line before these
 % commands).
-\author[Sturla, Sneidermanis]{MartÌn Sturla, DarÌo Sneidermanis\\\textit{Estudiantes 
-       Instituto TecnolÛgico de Buenos Aires (ITBA)}\\
+\author[Sturla, Sneidermanis]{Mart√≠n Sturla, Dar√≠o Sneidermanis\\\textit{Estudiantes 
+       Instituto Tecnol√≥gico de Buenos Aires (ITBA)}\\
 \\\textbf{28 de Junio de 2012}
 }
 
 
 
-\journal{C·tedra\ de\ Met.\ Num.\ Avanzados,\ ITBA\ }
+\journal{C√°tedra\ de\ Met.\ Num.\ Avanzados,\ ITBA\ }
 \titletext{- 28, JUNIO\ 2012}
 \ieeecopyright{\copyright\ 2011 ITBA}
 \lognumber{}
@@ -80,33 +80,33 @@ JPEG y la compresiÛn de im·genes\\ mediante DCT Quantization}
 \maketitle               
 
 \begin{abstract} 
-El siguiente paper busca analizar la deformaciÛn radial de un cilindro cuando 
+El siguiente paper busca analizar la deformaci√≥n radial de un cilindro cuando 
 es expuesto a cambios de temperatura, utilizando ecuaciones en diferencias.
 \end{abstract}
 
 \begin{keywords}
-DeformaciÛn. ecuaciones en diferencias, derivadas parciales, temperatura.
+Deformaci√≥n. ecuaciones en diferencias, derivadas parciales, temperatura.
 \end{keywords}
 
-\section{IntroducciÛn}
+\section{Introducci√≥n}
 
-\par El estudio de la deformaciÛn radial de un cilindro debido a cambios en su temperatura concierne a 
-varias ramas de las ingenierÌas industriales y mec·nicas. En particular, se utiliza para encajar 
+\par El estudio de la deformaci√≥n radial de un cilindro debido a cambios en su temperatura concierne a 
+varias ramas de las ingenier√≠as industriales y mec√°nicas. En particular, se utiliza para encajar 
 engranajes o discos en un eje, e incluso para el estudio de turbinas o calderas. 
-\par La ecuaciÛn diferencial en derivadas parciales que describe la distribuciÛn de temperatura 
+\par La ecuaci√≥n diferencial en derivadas parciales que describe la distribuci√≥n de temperatura 
 en dichos cilindros no es lineal. Sin embargo, se pueden utilizar ecuaciones en diferencias 
-para aproximar la soluciÛn. Este paper busca hallar una ecuaciÛn en diferencias que lo haga 
+para aproximar la soluci√≥n. Este paper busca hallar una ecuaci√≥n en diferencias que lo haga 
 y analizar su estabilidad. 
 
-\section{DeducciÛn de la ecuaciÛn en diferencias}
+\section{Deducci√≥n de la ecuaci√≥n en diferencias}
 
-La temperatura $u(r,t)$ satisface la siguiente ecuaciÛn diferencial ($K=0,1$):
+La temperatura $u(r,t)$ satisface la siguiente ecuaci√≥n diferencial ($K=0,1$):
 
 \begin{equation}
 \frac{\partial^2 u}{\partial r^2}+\frac{1}{r}\frac{\partial u}{\partial r}=\frac{1}{4K}\frac{\partial u}{\partial t}
 \end{equation}
 
-Dicha ecuaciÛn diferencial se puede llevar a una ecuaciÛn en diferencias 
+Dicha ecuaci√≥n diferencial se puede llevar a una ecuaci√≥n en diferencias 
 utilizando las siguientes propiedades:
 
 \begin{equation}
@@ -117,9 +117,9 @@ utilizando las siguientes propiedades:
 \frac{\delta^2 f}{\delta x^2}\ =  \frac{f(x+\Delta x) - 2f(x) + f(x-\Delta x)}{\Delta x} + O(\Delta x^2)
 \end{equation}
 
-Sean $\Delta r$ y $\Delta t$ los cambios en el radio y temperatura respectivamente, y $v(r,t)$ la aproximaciÛn 
-de $u(r,t)$ utilizando ecuaciones en diferencias. La ecuaciÛn en diferencias 
-est· dada por:
+Sean $\Delta r$ y $\Delta t$ los cambios en el radio y temperatura respectivamente, y $v(r,t)$ la aproximaci√≥n 
+de $u(r,t)$ utilizando ecuaciones en diferencias. La ecuaci√≥n en diferencias 
+est√° dada por:
 
 \[ \frac{v(n+1,t) - 2v(n,t) + v(n-1,t)}{\Delta r^2} + \frac{v(n+1,t) - v(n,t)}{r\Delta r} = \frac{1}{4K}\frac{v(n,t+1) - v(n,t)}{\Delta t} \]
 
@@ -132,7 +132,7 @@ Lo cual se reduce a:
 p(1+q)v(n+1,t) + (1-p(2+q))v(n,t) + p(n-1,t) = v(n,t+1)
 \end{equation}
 
-Las ecuaciones de contorno est·n dadas por:
+Las ecuaciones de contorno est√°n dadas por:
 
 \begin{equation}
 u(1,t) = 100+40t
@@ -142,29 +142,29 @@ u(1,t) = 100+40t
 u(\frac{1}{2}, t) = t
 \end{equation}
 
-Y la condiciÛn inicial es:
+Y la condici√≥n inicial es:
 
 \begin{equation}
 u(r,0) = 200(r - 0,5)
 \end{equation}
 
-Donde el dominio de las funciones est· dado por $\frac{1}{2} < r < 1$ y $0\leq t \leq 10$. Adem·s, 
-la deformaciÛn $d$ del cilindro es proporcional a la temperatura media del cilindro ($\alpha = 10,7$, es decir:
+Donde el dominio de las funciones est√° dado por $\frac{1}{2} < r < 1$ y $0\leq t \leq 10$. Adem√°s, 
+la deformaci√≥n $d$ del cilindro es proporcional a la temperatura media del cilindro ($\alpha = 10,7$, es decir:
 
 \begin{equation}\label{deform}
 d(t) = \alpha \int_{\frac{1}{2}}^{1} u(r,t)rdr
 \end{equation}
 
-NÛtese que la ecuaciÛn en diferencias \eqref{difs} da, utilizando las condiciones iniciales y de contorno, 
+N√≥tese que la ecuaci√≥n en diferencias \eqref{difs} da, utilizando las condiciones iniciales y de contorno, 
 una regla para aproximar la temperatura en una grilla perteneciente al dominio. Utilizando la misma 
-se puede aproximar la integral de la ecuaciÛn \eqref{deform} utilizando la regla del trapecio.
+se puede aproximar la integral de la ecuaci√≥n \eqref{deform} utilizando la regla del trapecio.
 
 \section{Estabilidad}
 
 
 \subsection{Matrices}
 
-De la ecuaciÛn \eqref{difs} se desprende la siguiente propiedad:
+De la ecuaci√≥n \eqref{difs} se desprende la siguiente propiedad:
 
 \begin{equation}
 \overline{v_{t+1}} = tridiag(p,1-p(2+q),p(1+q))\overline{v_{t}}
@@ -172,21 +172,21 @@ De la ecuaciÛn \eqref{difs} se desprende la siguiente propiedad:
 
 Donde $\overline{v_{k}}$ es un vector columna con los valores aproximados por $v$ en el momento $k\Delta t$ 
 para cada valor de $r$ en la grilla. Por otro lado, $tridiag(p,1-p(2+q),p(1+q))$ es una matriz tridiagonal 
-con $1-p(2+q)$ en la diagonal, $p$ abajo de la diagonal y $p(1+q)$ arriba de la diagonal. Adem·s: 
+con $1-p(2+q)$ en la diagonal, $p$ abajo de la diagonal y $p(1+q)$ arriba de la diagonal. Adem√°s: 
 
 \begin{equation}\eqref{mat}
 \overline{v_{k}} = tridiag(p,1-p(2+q),p(1+q))^k\overline{v_{0}}
 \end{equation}
 
-De la ecuaciÛn \eqref{mat} se puede apreciar que si los autovalores de la matriz diagonal son 
-mayores en mÛdulo a $1$, \overline{v_{k}} diverge, dado que los errores cometidos en cada paso se propagan 
-demasiado. Los autvalores de una matriz tridiagonal con valores $(a,b,c)$ de dimensiÛn $n$ est·n dados por:
+De la ecuaci√≥n \eqref{mat} se puede apreciar que si los autovalores de la matriz diagonal son 
+mayores en m√≥dulo a $1$, $\overline{v_{k}}$ diverge, dado que los errores cometidos en cada paso se propagan 
+demasiado. Los autvalores de una matriz tridiagonal con valores $(a,b,c)$ de dimensi√≥n $n$ est√°n dados por:
 
 \begin{equation}
-\lambda_j = b + 2\sqrt{ac}cos(\frac{j\pi}{n+1}
+\lambda_j = b + 2\sqrt{ac}cos(\frac{j\pi}{n+1})
 \end{equation}
 
-Asumiendo el peor caso, cuando el coseno vale 1, y reemplazando por los valores de la ecuaciÛn \eqref{mat} se deduce: 
+Asumiendo el peor caso, cuando el coseno vale 1, y reemplazando por los valores de la ecuaci√≥n \eqref{mat} se deduce: 
 
 \[
 1 \geq 1-2p-pq + 2\sqrt{p^2(1+q)}
@@ -197,7 +197,7 @@ Asumiendo el peor caso, cuando el coseno vale 1, y reemplazando por los valores 
 \[
 2 +q \geq 2\sqrt{1+q}
 \]
-Como ambos lados son siempre positivos, es v·lido elevarlos al cuadrado sin modificar el sÌmbolo de la inecuaciÛn.
+Como ambos lados son siempre positivos, es v√°lido elevarlos al cuadrado sin modificar el s√≠mbolo de la inecuaci√≥n.
 \[
 4 + 4q + q^2 \geq 4+4q
 \]
@@ -205,44 +205,44 @@ Como ambos lados son siempre positivos, es v·lido elevarlos al cuadrado sin modi
  q^2 \geq 0
 \end{equation}
 
-Es claro ver que la inecuaciÛn \eqref{nosirve} no ofrece ning˙n tipo de informaciÛn dado que $q$ es trivialmente 
-un n˙mero real.
+Es claro ver que la inecuaci√≥n \eqref{nosirve} no ofrece ning√∫n tipo de informaci√≥n dado que $q$ es trivialmente 
+un n√∫mero real.
 
 \subsection{Von Neumann}
 
-A la ecuaciÛn \eqref{difs}, se le aplica una transformada discreta de Fourier sobre la variable $r$ a ambos lados: 
+A la ecuaci√≥n \eqref{difs}, se le aplica una transformada discreta de Fourier sobre la variable $r$ a ambos lados: 
 
 \[
-\widehat{V_t+1} = p(1+q)e^{i\omega}\widehat{V_t}+(1-p(2+q))\widehat{V_t}+pe^{-i\omega}\widehat{V_t}
+\widehat{V_{t+1}} = p(1+q)e^{i\omega}\widehat{V_t}+(1-p(2+q))\widehat{V_t}+pe^{-i\omega}\widehat{V_t}
 \]
 
 De lo cual se deduce:
 \begin{equation}
-\frac{\widehat{V_t+1}}{\widehat{V_t}} = p(1+q)e^{i\omega}+(1-p(2+q))+pe^{-i\omega}
+\frac{\widehat{V_{t+1}}}{\widehat{V_t}} = p(1+q)e^{i\omega}+(1-p(2+q))+pe^{-i\omega}
 \end{equation}
-El criterio de Von Neumann pide que para $-\pi \leq \omega \leq \pi$ el mÛdulo al cuadrado de dicha razÛn 
+El criterio de Von Neumann pide que para $-\pi \leq \omega \leq \pi$ el m√≥dulo al cuadrado de dicha raz√≥n 
 sea menor a 1. Utilizando que $e^{i\omega} = cos(\omega) + i sen(\omega)$:
 \begin{equation}
 1 \geq  cos(\omega) (2p+pq) + ipqsen(\omega)+ 1 - p(2+q)
 \end{equation}
 
-El mÛdulo de 
-un complejo equivale a su parte real al cuadrado m·s su parte imaginaria al cuadrado, por lo que se deduce:
+El m√≥dulo de 
+un complejo equivale a su parte real al cuadrado m√°s su parte imaginaria al cuadrado, por lo que se deduce:
 \begin{equation}{vn}
 1 \geq  (cos(\omega) (2p+pq) + 1 - p(2+q))^2 + (pqsen(\omega))^2
 \end{equation}
-Si se deriva la parte derecha de la inecuaciÛn y se iguala a cero para hallar su m·ximo se deduce:
+Si se deriva la parte derecha de la inecuaci√≥n y se iguala a cero para hallar su m√°ximo se deduce:
 \begin{equation}
 2(4p^2+4p^2q+p^2q^2) cos(\omega)sen(\omega) - 2sen(\omega)(2p+pq)(1-p(2+q))+2p^2q^2cos(\omega)sen(\omega) = 0
 \end{equation}
-Es f·cil ver que si $\omega = 0$ la derivada es igual a cero. Sustituyendo \omega por 0 en \eqref{vn}, se llega a:
+Es f√°cil ver que si $\omega = 0$ la derivada es igual a cero. Sustituyendo $\omega$ por 0 en \eqref{vn}, se llega a:
 \[
 1 \geq  (2p+pq) + 1 - p(2+q) = 1
 \]
-Lo cual es trivialmente v·lido. Pero todavÌa se deben evaluar los lÌmites del dominio, es decir los casos 
-en los que \omega vale $-\pi$ y $\pi$. Es f·cil ver de \eqref{vn} que si $\omega$ vale $\pi$ la inecuaciÛn 
-es m·s restrictiva dado que el seno vale 1 y el valor que lo multiplica, $p^2q^2$, es positivo, por lo que 
-se considerar· solo dicho caso.
+Lo cual es trivialmente v√°lido. Pero todav√≠a se deben evaluar los l√≠mites del dominio, es decir los casos 
+en los que \omega vale $-\pi$ y $\pi$. Es f√°cil ver de \eqref{vn} que si $\omega$ vale $\pi$ la inecuaci√≥n 
+es m√°s restrictiva dado que el seno vale 1 y el valor que lo multiplica, $p^2q^2$, es positivo, por lo que 
+se consider√≥ solo dicho caso.
 \[ 
 (1-p(2+q))^2+p^2q^2 \leq 1
 \]
@@ -256,9 +256,9 @@ Como $p$ es positivo:
 \begin{equation}\label{truecond} 
 4p+4qp+2q^2p \leq 2q+4
 \end{equation}
-Esto da una condiciÛn de estabilidad que se debe cumplir. Sin embargo, si se desea una relaciÛn m·s clara 
+Esto da una condici√≥n de estabilidad que se debe cumplir. Sin embargo, si se desea una relaci√≥n m√°s clara 
 entre $\Delta t$ y $\Delta r$, se puede asumir que como $q$ es $\frac{\Delta r}{r}, considerando un $\Delta r$ pequeÒo, 
-el primer tÈrmino del lado izquierdo ser· el mayor. Por otro lado, como $q$ es positivo, en particular debe 
+el primer t√©rmino del lado izquierdo ser√° el mayor. Por otro lado, como $q$ es positivo, en particular debe 
 ser menor a 4. Por lo que:
 \begin{equation}\label{p}
 p \leq 1
@@ -269,14 +269,14 @@ p \leq 1
 \begin{equation}\label{cond}
 \Delta t \leq 2,5\Delta r^2
 \end{equation}
-La inecuaciÛn \eqref{cond}, debido a las asunciones hechas, es teÛricamente una condiciÛn necesaria pero no 
-suficiente; no es equivalente a \eqref{truecond}. Sin embargo, en la pr·ctica dio buenos resultados. Adem·s, 
+La inecuaci√≥n \eqref{cond}, debido a las asunciones hechas, es te√≥ricamente una condici√≥n necesaria pero no 
+suficiente; no es equivalente a \eqref{truecond}. Sin embargo, en la pr√°ctica dio buenos resultados. Adem√°s, 
 demuestra que el paso usado para el tiempo debe ser sustancialmente 
-menor al paso del radio (asumiendo que los valores pequeÒos).
+menor al paso del radio (asumiendo que los valores peque√±os).
 
-\section{Error en el c·lculo de la integral}
+\section{Error en el c√°lculo de la integral}
 
-El error en una integral aproximada por el mÈtodo del trapecio est· dado por:
+El error en una integral aproximada por el m√©todo del trapecio est√° dado por:
 
 \begin{equation}
 e_{trap} = - \frac{(b-a)^3\frac{\delta^2f(\xi)}{\delta x^2}}{12N^2}
@@ -289,148 +289,148 @@ e_{trap} = - \frac{(\frac{1}{2})^3\frac{\partial^2u(\xi,t)}{\delta r^2}}{12(\fra
 \[
 e_{trap} = -\frac{\Delta r^2}{24}\frac{\partial^2u(\xi,t)}{\partial r^2}
 \]
-Se analizÛ el caso de $t=10$. El siguiente gr·fico muestra una aproximaciÛn de la derivada segunda de $u$ respecto 
+Se analiz√≥ el caso de $t=10$. El siguiente gr√°fico muestra una aproximaci√≥n de la derivada segunda de $u$ respecto 
 al radio:
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[scale=0.3]{./img/uxx.bmp}
+	\includegraphics[scale=0.2]{./img/uxx.bmp}
 	\end{center}
 \end{figure}
 \begin{center}
 \par Figura 1: Derivada segunda de u respecto a r para $t=10$.
 \end{center}
 
-Del gr·fico se puede apreciar que la derivada segunda es negativa, por lo que el error es positivo. Es decir, 
-se subestima el valor de la deformaciÛn. Por otro lado, es evidente que $2$ es una cota apropiada para el 
-mÛdulo de dicha derivada. Por lo que:
+Del gr√°fico se puede apreciar que la derivada segunda es negativa, por lo que el error es positivo. Es decir, 
+se subestima el valor de la deformaci√≥n. Por otro lado, es evidente que $2$ es una cota apropiada para el 
+m√≥dulo de dicha derivada. Por lo que:
 
 \[
 e_{trap} = \frac{\Delta r^2}{12}
 \]
-En otras palabras, el error de aproximar la integral por el mÈtodo del trapecio es equivalente a un doceavo 
-del paso en el radio usado, para $t=10$. NÛtese que este error contempla ˙nicamente el error por utilizar 
-dicho mÈtodo y no el error por aproximar $u(r,t)$ utilizando $v(r,t)$.
+En otras palabras, el error de aproximar la integral por el m√©todo del trapecio es equivalente a un doceavo 
+del paso en el radio usado, para $t=10$. N√≥tese que este error contempla √∫nicamente el error por utilizar 
+dicho m√©todo y no el error por aproximar $u(r,t)$ utilizando $v(r,t)$.
 
 \section{Resultados}
 
 \subsection{Temperaturas para distintos radios}
 
-El siguiente gr·fico muestra temperaturas para distintos radios en funciÛn del tiempo. Se utilizÛ $\Delta r = 0.025$ 
-y $\Delta t = 0.0005$. Se puede apreciar que la temperatura incrementa en el tiempo, y adem·s es menor 
+El siguiente gr√°fico muestra temperaturas para distintos radios en funci√≥n del tiempo. Se utiliz√≥ $\Delta r = 0.025$ 
+y $\Delta t = 0.0005$. Se puede apreciar que la temperatura incrementa en el tiempo, y adem√°s es menor 
 para menores valores del radio.
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[scale=0.3]{./img/r.bmp}
+	\includegraphics[scale=0.2]{./img/r.bmp}
 	\end{center}
 \end{figure}
 \begin{center}
-\par Figura 2: Temperatura en funciÛn del tiempo para distintos radios.
+\par Figura 2: Temperatura en funci√≥n del tiempo para distintos radios.
 \end{center}
 
-En el siguiente gr·fico se demuestra la temperatura en funciÛn del radio y el tiempo, utilizando $\Delta r = 0.1$ y 
-$\Delta t = 0.001$. Las conclusiones extraÌdas del mismo son equivalentes a las del gr·fico anterior.
+En el siguiente gr√°fico se demuestra la temperatura en funci√≥n del radio y el tiempo, utilizando $\Delta r = 0.1$ y 
+$\Delta t = 0.001$. Las conclusiones extra√≠das del mismo son equivalentes a las del gr√°fico anterior.
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[scale=0.3]{./img/mesh.bmp}
+	\includegraphics[scale=0.2]{./img/mesh.bmp}
 	\end{center}
 \end{figure}
 \begin{center}
-\par Figura 3: Temperatura en funciÛn del tiempo y el radio.
+\par Figura 3: Temperatura en funci√≥n del tiempo y el radio.
 \end{center}
 
-\subsection{DeformaciÛn}
+\subsection{Deformaci√≥n}
 
-La figura 4 demuestra la deformaciÛn en funciÛn del tiempo. Se utilizÛ nuevamente $\Delta r = 0.025$ 
-y $\Delta t = 0.0005$. NÛtese que la deformaciÛn incrementa con el tiempo, lo cual es esperable debido a 
-que la temperatura tambiÈn lo hace. Por otro lado, se puede apreciar que el incremento es lineal.
+La figura 4 demuestra la deformaci√≥n en funci√≥n del tiempo. Se utiliz√≥ nuevamente $\Delta r = 0.025$ 
+y $\Delta t = 0.0005$. N√≥tese que la deformaci√≥n incrementa con el tiempo, lo cual es esperable debido a 
+que la temperatura tambi√©n lo hace. Por otro lado, se puede apreciar que el incremento es lineal.
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[scale=0.3]{./img/deformacion.bmp}
+	\includegraphics[scale=0.2]{./img/deformacion.bmp}
 	\end{center}
 \end{figure}
 \begin{center}
-\par Figura 4: DeformaciÛn en funciÛn del tiempo.
+\par Figura 4: Deformaci√≥n en funci√≥n del tiempo.
 \end{center}
 
 \subsection{Isotermas}
 
-En la figura dos se pueden apreciar las isotermas de la soluciÛn. Estas serÌan las curvas resultantes de 
-la intersecciÛn de los planos para distintas temperaturas con la soluciÛn. El siguiente gr·fico (figura 5) muestra 
+En la figura dos se pueden apreciar las isotermas de la soluci√≥n. Estas ser√≠an las curvas resultantes de 
+la intersecci√≥n de los planos para distintas temperaturas con la soluci√≥n. El siguiente gr√°fico (figura 5) muestra 
 las curvas para distintas temperaturas, llevadas todas a un mismo plano para poder representarlas en dos dimensiones.
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[scale=0.3]{./img/isotemps.png}
+	\includegraphics[scale=0.2]{./img/isotemps.png}
 	\end{center}
 \end{figure}
 \begin{center}
 \par Figura 5: Isotermas para u = 50,100,150,200,250,300,350,400, de izquierda a derecha.
 \end{center}
 
-\subsection{UtilizaciÛn de pasos no estables}
+\subsection{Utilizaci√≥n de pasos no estables}
 
-Los siguientes gr·ficos muestran la temperatura en funciÛn del radio para tiempos sucesivos. Se utilizÛ un 
-paso de $\Delta r = 0.1$ y \Delta t= 0.1$. NÛtese que para estos valores $p=4$, lo cual es inestable seg˙n \eqref{p}. 
+Los siguientes gr√°ficos muestran la temperatura en funci√≥n del radio para tiempos sucesivos. Se utiliz√≥ un 
+paso de $\Delta r = 0.1$ y \Delta t= 0.1$. N√≥tese que para estos valores $p=4$, lo cual es inestable seg√∫n \eqref{p}. 
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[scale=0.3]{./img/div1.png}
+	\includegraphics[scale=0.2]{./img/div1.png}
 	\end{center}
 \end{figure}
 \begin{center}
-\par Figura 6: Temperatura en funciÛn del radio, para $t=0.0$.
+\par Figura 6: Temperatura en funci√≥n del radio, para $t=0.0$.
 \end{center}
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[scale=0.3]{./img/div2.png}
+	\includegraphics[scale=0.2]{./img/div2.png}
 	\end{center}
 \end{figure}
 \begin{center}
-\par Figura 7: Temperatura en funciÛn del radio, para $t=0.1$.
+\par Figura 7: Temperatura en funci√≥n del radio, para $t=0.1$.
 \end{center}
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[scale=0.3]{./img/div3.png}
+	\includegraphics[scale=0.2]{./img/div3.png}
 	\end{center}
 \end{figure}
 \begin{center}
-\par Figura 8: Temperatura en funciÛn del radio, para $t=0.2$.
+\par Figura 8: Temperatura en funci√≥n del radio, para $t=0.2$.
 \end{center}
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[scale=0.3]{./img/div4.png}
+	\includegraphics[scale=0.2]{./img/div4.png}
 	\end{center}
 \end{figure}
 \begin{center}
-\par Figura 9: Temperatura en funciÛn del radio, para $t=0.3$.
+\par Figura 9: Temperatura en funci√≥n del radio, para $t=0.3$.
 \end{center}
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[scale=0.3]{./img/div5.png}
+	\includegraphics[scale=0.2]{./img/div5.png}
 	\end{center}
 \end{figure}
 \begin{center}
-\par Figura 10: Temperatura en funciÛn del radio, para $t=0.4$.
+\par Figura 10: Temperatura en funci√≥n del radio, para $t=0.4$.
 \end{center}
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[scale=0.3]{./img/div6.png}
+	\includegraphics[scale=0.2]{./img/div6.png}
 	\end{center}
 \end{figure}
 \begin{center}
-\par Figura 11: Temperatura en funciÛn del radio, para $t=0.5$.
+\par Figura 11: Temperatura en funci√≥n del radio, para $t=0.5$.
 \end{center}
 
-\par De los gr·ficos se puede apreciar cÛmo r·pidamente la temperatura comienza a diverger. Esto se debe 
+\par De los gr√°ficos se puede apreciar c√≥mo r√°pidamente la temperatura comienza a diverger. Esto se debe 
 al uso de pasos inestables, lo cual demuestra la importancia de garantizar la estabilidad de la aproximaciones 
 utilizando ecuaciones en diferencias.
 
@@ -451,6 +451,6 @@ utilizando ecuaciones en diferencias.
 
 \onecolumn
 
-\section*{Anexo A: CÛdigo Octave}
+\section*{Anexo A: C√≥digo Octave}
 
 \VerbatimInput{../src/main.m}
