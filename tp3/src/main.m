@@ -42,10 +42,14 @@ function main( dr, dt, max_time)
 			D(t) += a * (U(r,t)*((r-1)*dr + 0.5) + U(r+1,t)*(r*dr + 0.5) )/2 * dr;
 		end
 	end
-	%plot((0:T-1) * dt, D);
+	
+	%plot de la deformacion
+	plot((0:T-1) * dt, D);
 	
 	clearplot;
 	hold on;
+	
+	%plot de las isotermas
 	for temp = 1:8
 		k = 1;
 		clear ts;
@@ -65,15 +69,15 @@ function main( dr, dt, max_time)
 	print('isotemps.png');
 	
 	%Se plotea para r = 0.6, 0.7, 0.8, 0.9
-	%plot((0:T-1) .* dt, U(ceil(0.1/dr), :), (0:T-1) .* dt, U(ceil(0.2/dr), :), 
-	%(0:T-1) .* dt, U(ceil(0.3/dr), :), (0:T-1) .* dt, U(ceil(0.4/dr), :)); 
+	plot((0:T-1) .* dt, U(ceil(0.1/dr), :), (0:T-1) .* dt, U(ceil(0.2/dr), :), 
+	(0:T-1) .* dt, U(ceil(0.3/dr), :), (0:T-1) .* dt, U(ceil(0.4/dr), :)); 
 	
 	
 	
 	
 	
 	%Realizar el mesh
-	%mesh((0:T-1) .* dt,(0:R-1) .* dr +0.5, U);
+	mesh((0:T-1) .* dt,(0:R-1) .* dr +0.5, U);
 	
 endfunction
 	
