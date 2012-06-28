@@ -125,7 +125,8 @@ está dada por:
 p(1+q)v(n+1,t) + (1-p(2+q))v(n,t) + pv(n-1,t) = v(n,t+1)
 \end{equation}
 
-Con $p=\frac{\Delta t4K}{\Delta r^2}$ y $q=\frac{\Delta r}{r}$. \\
+Con $p=\frac{\Delta t4K}{\Delta r^2}$ y $q=\frac{\Delta r}{r}$. La deducción de \eqref{difs} puede ser 
+hallada en el Anexo B.
 
 
 
@@ -229,7 +230,7 @@ un complejo equivale a su parte real al cuadrado más su parte imaginaria al cua
 1 \geq  (cos(\omega) (2p+pq) + 1 - p(2+q))^2 + (pqsen(\omega))^2
 \end{equation}
 Se derivó la parte derecha de la inecuación y se igualó a cero para hallar su máximo. La expresión 
-puede ser hallada en el Anexo B. Se anula dicha expresión en $\omega =0$.
+puede ser hallada en el Anexo C. Se anula dicha expresión en $\omega =0$.
 
 Es fácil ver que si $\omega = 0$ la derivada es igual a cero. Sustituyendo $\omega$ por 0 en (15), se llega a:
 \[
@@ -254,7 +255,7 @@ Como $p$ es positivo:
 \end{equation}
 Esto da una condición de estabilidad que se debe cumplir. Sin embargo, si se desea una relación más clara 
 entre $\Delta t$ y $\Delta r$, se puede asumir que como $q$ es $\frac{\Delta r}{r}$, considerando un $\Delta r$ pequeño, 
-el primer término del lado izquierdo será el mayor. Por otro lado, como $q$ es positivo, en particular debe 
+el primer término del lado izquierdo será el mayor. Por otro lado, como $q$ es positivo, en particular $4p$ debe 
 ser menor a 4. Por lo que:
 \begin{equation}\label{p}
 p \leq 1
@@ -268,7 +269,7 @@ p \leq 1
 La inecuación \eqref{cond}, debido a las asunciones hechas, es teóricamente una condición necesaria pero no 
 suficiente; no es equivalente a \eqref{truecond}. Sin embargo, en la práctica dio buenos resultados. Además, 
 demuestra que el paso usado para el tiempo debe ser sustancialmente 
-menor al paso del radio (asumiendo que los valores pequeños).
+menor al paso del radio (asumiendo que los valores de los pasos son pequeños).
 
 \section{Error en el cálculo de la integral}
 
@@ -290,7 +291,7 @@ al radio:
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[scale=0.2]{./img/uxx.png}
+	\includegraphics[scale=0.5]{./img/uxx.png}
 	\end{center}
 \end{figure}
 \begin{center}
@@ -302,7 +303,7 @@ se subestima el valor de la deformación. Por otro lado, es evidente que $2$ es 
 módulo de dicha derivada. Por lo que:
 
 \[
-e_{trap} = \frac{\Delta r^2}{12}
+e_{trap} \leq \frac{\Delta r^2}{12}
 \]
 En otras palabras, el error de aproximar la integral por el método del trapecio es equivalente a un doceavo 
 del paso en el radio usado, para $t=10$. Nótese que este error contempla únicamente el error por utilizar 
