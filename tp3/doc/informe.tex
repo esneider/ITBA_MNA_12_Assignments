@@ -370,7 +370,7 @@ las curvas para distintas temperaturas, llevadas todas a un mismo plano para pod
 \subsection{Utilización de pasos no estables}
 
 Los siguientes gráficos muestran la temperatura en función del radio para tiempos sucesivos. Se utilizó un 
-paso de $\Delta r = 0.1$ y \Delta t= 0.1$. Nótese que para estos valores $p=4$, lo cual es inestable según \eqref{p}. 
+paso de $\Delta r = 0.1$ y $\Delta t= 0.1$. Nótese que para estos valores $p=4$, lo cual es inestable según \eqref{p}. 
 
 \begin{figure}[H]
 	\begin{center}
@@ -460,7 +460,7 @@ utilizando ecuaciones en diferencias.
 \[ \frac{v(n+1,t) - 2v(n,t) + v(n-1,t)}{\Delta r^2} + \frac{v(n+1,t) - v(n,t)}{r\Delta r} = \frac{1}{4K}\frac{v(n,t+1) - v(n,t)}{\Delta t} \]
 
 Sea $p=\frac{\Delta t4K}{\Delta r^2}$ y $q=\frac{\Delta r}{r}$.
-\[ p\left( v(n+1,t) - 2v(n,t) + v(n-1,t) + q\left( v(n+1,t) - v(n,t) \right) + v(n,t) = v(n, t+1) \]
+\[ p\left( v(n+1,t) - 2v(n,t) + v(n-1,t) + q\left( v(n+1,t) - v(n,t)\right)\right) + v(n,t) = v(n, t+1) \]
 
 Lo cual se reduce a:
 
