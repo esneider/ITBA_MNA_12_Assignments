@@ -175,7 +175,7 @@ con $1-p(2+q)$ en la diagonal, $p$ abajo de la diagonal y $p(1+q)$ arriba de la 
 \overline{v_{k}} = tridiag(p,1-p(2+q),p(1+q))^k\overline{v_{0}}
 \end{equation}
 
-De la ecuación \eqref{matsa} se puede apreciar que si los autovalores de la matriz diagonal son 
+De la ecuación (10) se puede apreciar que si los autovalores de la matriz diagonal son 
 mayores en módulo a $1$, $\overline{v_{k}}$ diverge, dado que los errores cometidos en cada paso se propagan 
 demasiado. Los autvalores de una matriz tridiagonal con valores $(a,b,c)$ de dimensión $n$ están dados por:
 
@@ -183,7 +183,7 @@ demasiado. Los autvalores de una matriz tridiagonal con valores $(a,b,c)$ de dim
 \lambda_j = b + 2\sqrt{ac}cos(\frac{j\pi}{n+1})
 \end{equation}
 
-Asumiendo el peor caso, cuando el coseno vale 1, y reemplazando por los valores de la ecuación \eqref{matsa} se deduce: 
+Asumiendo el peor caso, cuando el coseno vale 1, y reemplazando por los valores de la ecuación (10) se deduce: 
 
 \[
 1 \geq 1-2p-pq + 2\sqrt{p^2(1+q)}
@@ -231,12 +231,12 @@ un complejo equivale a su parte real al cuadrado más su parte imaginaria al cua
 Se derivó la parte derecha de la inecuación y se igualó a cero para hallar su máximo. La expresión 
 puede ser hallada en el Anexo B. Se anula dicha expresión en $\omega =0$.
 
-Es fácil ver que si $\omega = 0$ la derivada es igual a cero. Sustituyendo $\omega$ por 0 en \eqref{vnvn}, se llega a:
+Es fácil ver que si $\omega = 0$ la derivada es igual a cero. Sustituyendo $\omega$ por 0 en (15), se llega a:
 \[
 1 \geq  (2p+pq) + 1 - p(2+q) = 1
 \]
 Lo cual es trivialmente válido. Pero todavía se deben evaluar los límites del dominio, es decir los casos 
-en los que \omega vale $-\pi$ y $\pi$. Es fácil ver de \eqref{vnvn} que si $\omega$ vale $\pi$ la inecuación 
+en los que $\omega$ vale $-\pi$ y $\pi$. Es fácil ver de (15) que si $\omega$ vale $\pi$ la inecuación 
 es más restrictiva dado que el seno vale 1 y el valor que lo multiplica, $p^2q^2$, es positivo, por lo que 
 se consideró solo dicho caso.
 \[ 
@@ -253,7 +253,7 @@ Como $p$ es positivo:
 4p+4qp+2q^2p \leq 2q+4
 \end{equation}
 Esto da una condición de estabilidad que se debe cumplir. Sin embargo, si se desea una relación más clara 
-entre $\Delta t$ y $\Delta r$, se puede asumir que como $q$ es $\frac{\Delta r}{r}$, considerando un $\Delta r$ peque�o, 
+entre $\Delta t$ y $\Delta r$, se puede asumir que como $q$ es $\frac{\Delta r}{r}$, considerando un $\Delta r$ pequeño, 
 el primer término del lado izquierdo será el mayor. Por otro lado, como $q$ es positivo, en particular debe 
 ser menor a 4. Por lo que:
 \begin{equation}\label{p}
@@ -318,7 +318,7 @@ para menores valores del radio.
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[scale=0.4]{./img/r.png}
+	\includegraphics[scale=0.33]{./img/r.png}
 	\end{center}
 \end{figure}
 \begin{center}
@@ -447,7 +447,11 @@ utilizando ecuaciones en diferencias.
 
 \onecolumn
 
-\section*{Anexo A: Deducción ecuación en diferencias}
+\section*{Anexo A: Código Octave}
+
+\VerbatimInput{../src/main.m}
+
+\section*{Anexo B: Deducción ecuación en diferencias}
 
 \begin{equation}
 \frac{\partial^2 u}{\partial r^2}+\frac{1}{r}\frac{\partial u}{\partial r}=\frac{1}{4K}\frac{\partial u}{\partial t}
@@ -460,18 +464,14 @@ Sea $p=\frac{\Delta t4K}{\Delta r^2}$ y $q=\frac{\Delta r}{r}$.
 
 Lo cual se reduce a:
 
-\begin{equation}\label{difs}
+\begin{equation}
 p(1+q)v(n+1,t) + (1-p(2+q))v(n,t) + pv(n-1,t) = v(n,t+1)
 \end{equation}
 
-\section*{Anexo B: Derivada}
+\section*{Anexo C: Derivada}
 
 \[
 2(4p^2+4p^2q+p^2q^2) cos(\omega)sen(\omega) - 2sen(\omega)(2p+pq)(1-p(2+q))+2p^2q^2cos(\omega)sen(\omega) = 0
 \]
 
-\clearpage
 
-\section*{Anexo C: Código Octave}
-
-\VerbatimInput{../src/main.m}
